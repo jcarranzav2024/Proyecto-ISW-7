@@ -1,0 +1,223 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Define la configuración del cliente Prisma y la base de datos
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// ===================== MODELOS PRINCIPALES =====================
+
+// Materias: Define las asignaturas disponibles dentro de un plan de estudios.
+model Materia {
+  MateriaId       Int   @id @default(autoincrement())
+  Nombre          String   @unique
+  Codigo          String   @unique
+  Creditos        Int
+  PlanesEstudio   PlanEstudio[] @relation("MateriasEnPlan")
+  Cursos          Curso[]     
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Plan de Estudios: Contiene la lista de materias asociadas a un programa académico.
+model PlanEstudio {
+  PlanEstudioId   Int   @id @default(autoincrement())
+  Nombre          String   @unique
+  Descripcion     String
+  Materias        Materia[] @relation("MateriasEnPlan")
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Cursos: Representa la oferta de una materia específica con un docente y un aula asignada.
+model Curso {
+  CursoId           Int      @id @default(autoincrement())
+  MateriaId         Int
+  DocenteId         Int
+  OfertaAcademicaId Int
+  Cupo              Int
+  Aula              String
+  Materia           Materia  @relation(fields: [MateriaId], references: [MateriaId])
+  Docente           Docente  @relation("CursosDocente", fields: [DocenteId], references: [DocenteId])
+  OfertaAcademica   OfertaAcademica @relation("ModeloDeCursosOfertas", fields: [OfertaAcademicaId], references: [OfertaAcademicaId])
+  Estudiantes       Matricula[]
+  HorarioId         Int
+  Historico         HistoricoAcademico[] @relation("HistoricoCurso")
+  CreadoEn          DateTime @default(now())
+  ActualizadoEn     DateTime @default(now()) @updatedAt
+}
+
+
+// Horario de los cursos: Define los días y horas en que se imparte un curso.
+model Horario {
+  HorarioId  Int      @id @default(autoincrement())
+  Dia        String
+  HoraInicio DateTime @db.Time
+  HoraFin    DateTime @db.Time 
+  CreadoEn  DateTime @db.Time @default(now())
+}
+
+
+// Período Académico: Representa un ciclo académico con una fecha de inicio y fin.
+model PeriodoAcademico {
+  PeriodoAcademicoId Int     @id @default(autoincrement())
+  Nombre             String  
+  OfertaAcademica    OfertaAcademica[]
+  CreadoEn           DateTime @default(now())
+  ActualizadoEn      DateTime @default(now()) @updatedAt
+}
+
+// Oferta Académica: Contiene la lista de cursos disponibles en un período académico.
+model OfertaAcademica {
+  OfertaAcademicaId  Int     @id @default(autoincrement())
+  PeriodoAcademicoId Int
+  PeriodoAcademico   PeriodoAcademico @relation(fields: [PeriodoAcademicoId], references: [PeriodoAcademicoId])
+  Cursos            Curso[] @relation("ModeloDeCursosOfertas")
+  CreadoEn          DateTime @default(now())
+  ActualizadoEn     DateTime @default(now()) @updatedAt
+}
+
+
+// Matrícula: Representa la inscripción de un estudiante en un curso.
+model Matricula {
+  MatriculaId   Int      @id @default(autoincrement())
+  EstudianteId  Int
+  CursoId       Int
+  Estado        EstadoMatricula @default(Activo)
+  FechaRegistro DateTime @default(now())
+  Estudiante    Estudiante @relation(fields: [EstudianteId], references: [EstudianteId])
+  Curso         Curso @relation(fields: [CursoId], references: [CursoId])
+}
+
+// Estado de la Matrícula: Define el estado de la inscripción de un estudiante en un curso.
+enum EstadoMatricula {
+  Matriculado
+  Activo
+  Retirado
+  Finalizado
+}
+
+// Histórico Académico: Guarda el registro de cursos matriculados y notas obtenidas por los estudiantes.
+model HistoricoAcademico {
+  HistoricoAcademicoId Int  @id @default(autoincrement())
+  EstudianteId         Int
+  CursoId              Int
+  Nota                 Float
+  Estudiante           Estudiante @relation(fields: [EstudianteId], references: [EstudianteId])
+  Curso                Curso      @relation("HistoricoCurso", fields: [CursoId], references: [CursoId])
+  CreadoEn             DateTime @default(now())
+  ActualizadoEn        DateTime @default(now()) @updatedAt
+}
+
+
+// Auditoría: Registra todas las acciones realizadas en el sistema para garantizar transparencia y seguridad.
+model Auditoria {
+  AuditoriaId     Int      @id @default(autoincrement())
+  Accion          String
+  UsuarioId       Int
+  Fecha           DateTime @default(now())
+  Usuario         Usuario  @relation(fields: [UsuarioId], references: [UsuarioId])
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Usuarios del Sistema: Contiene la información de los administradores, docentes y estudiantes que acceden al sistema.
+model Usuario {
+  UsuarioId       Int   @id @default(autoincrement())
+  Identificacion  String @unique
+  Login           String  
+  Contrasena      String
+  Email           String   @unique
+  Rol             Rol
+  Auditorias      Auditoria[]
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Estudiantes: Almacena los datos personales y registros académicos de los estudiantes.
+model Estudiante {
+  EstudianteId    Int      @id @default(autoincrement())
+  Identificacion  String
+  Nombre          String
+  Apellido1       String
+  Apellido2       String
+  Correo          String
+  Direccion       String
+  Telefono        String
+  Matriculas      Matricula[]
+  Historico       HistoricoAcademico[]
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Docentes: Contiene la información de los docentes y los cursos que imparten.
+model Docente {
+  DocenteId       Int      @id @default(autoincrement())
+  Identificacion  String
+  Nombre          String
+  Apellido1       String
+  Apellido2       String
+  Correo          String
+  Direccion       String
+  Telefono        String
+  Cursos          Curso[]  @relation("CursosDocente")
+  CreadoEn        DateTime @default(now())
+  ActualizadoEn   DateTime @default(now()) @updatedAt
+}
+
+// Roles: Define los tipos de usuarios que pueden acceder al sistema y sus permisos.
+enum Rol {
+  Administrador
+  Colaborador
+  Auditor
+}
+
+// Modelo de Provincias: Representa una provincia dentro del país.
+model Provincias {
+  ProvinciaId Int @id @default(autoincrement())
+  Provincia   String
+  Cantones    Cantones[] @relation("ModeloDeProvincias")
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+}
+
+// Modelo de Cantones: Representa un cantón dentro de una provincia.
+model Cantones {
+  CantonId     Int @id
+  Canton       String
+  ProvinciaId  Int
+  Provincias   Provincias @relation("ModeloDeProvincias", fields: [ProvinciaId], references: [ProvinciaId])
+  Distritos    Distritos[]
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+}
+
+// Modelo de Distritos: Representa un distrito dentro de un cantón.
+model Distritos {
+  DistritoId   Int @id 
+  Distrito     String
+  CantonId     Int
+  Cantones     Cantones @relation(fields: [CantonId], references: [CantonId])
+  FechaDeCreacion DateTime @default(now())
+  ActualizadoEn DateTime @default(now()) @updatedAt
+  Valoracion   Valoracion @default(Bueno)
+}
+
+// Enum de Valoración: Define la calidad de vida o infraestructura en un distrito.
+enum Valoracion {
+  Excelente
+  Bueno
+  Regular
+}
+

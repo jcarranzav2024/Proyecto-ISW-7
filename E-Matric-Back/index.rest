@@ -1,0 +1,468 @@
+// ******************* REST Client Materias ***********************
+### 
+GET http://localhost/materias/ HTTP/1.1
+### 
+GET http://localhost/materias/3 HTTP/1.1
+
+### 
+POST http://localhost/materias HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Nueva materia",
+  "Codigo": "MAT101 Nuevo",
+  "Creditos": 3
+} 
+
+### 
+DELETE http://localhost/materias/106 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/materias/107 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Actualización de la materia",
+  "Codigo": "MAT102",
+  "Creditos": 4
+}
+
+// ******************* REST Client PlanEstudios ***********************
+### 
+GET http://localhost/planestudios/ HTTP/1.1
+### 
+GET http://localhost/planestudios/10 HTTP/1.1
+
+### 
+POST http://localhost/planestudios HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Nuevo plan de estudios",
+  "Descripcion": "Descripción del nuevo plan de estudios"
+} 
+
+### 
+DELETE http://localhost/planestudios/106 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/planestudios/10 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Actualización del plan de estudios",
+  "Descripcion": "Descripción actualizada del plan de estudios"
+}
+
+// ******************* REST Client Cursos ***********************
+###
+GET http://localhost/cursos/ HTTP/1.1
+###
+GET http://localhost/cursos/14 HTTP/1.1
+
+###
+POST http://localhost/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+  "MateriaId": 1,
+  "DocenteId": 2,
+  "OfertaAcademicaId": 3,
+  "Cupo": 30,
+  "Aula": "David",
+  "HorarioId": 1
+} 
+
+###
+DELETE http://localhost/cursos/142 HTTP/1.1
+Content-Type: application/json  
+
+###
+PUT http://localhost/cursos/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "MateriaId": 1,
+  "DocenteId": 2,
+  "OfertaAcademicaId": 3,
+  "Cupo": 35,
+  "Aula": "Aula 102",
+  "HorarioId": 1
+}
+
+// ******************* REST Client Horarios ***********************
+### 
+GET http://localhost/horarios/ HTTP/1.1
+
+### 
+GET http://localhost/horarios/3 HTTP/1.1
+
+### 
+POST http://localhost/horarios HTTP/1.1
+Content-Type: application/json
+
+{
+  "Dia": "Domingo",
+  "HoraInicio": "1970-01-01T08:00:00.000Z",
+  "HoraFin": "1970-01-01T10:00:00.000Z"
+} 
+
+### 
+DELETE http://localhost/horarios/19 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/horarios/5 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Dia": "Actualizado",
+  "HoraInicio": "1970-01-01T08:00:00.000Z",
+  "HoraFin": "1970-01-01T23:00:00.000Z"
+}
+
+// ******************* REST Client PeriodosAcademicos ***********************
+### 
+GET http://localhost/periodosacademicos/ HTTP/1.1
+### 
+GET http://localhost/periodosacademicos/3 HTTP/1.1
+
+### 
+POST http://localhost/periodosacademicos HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Periodo 2023-1"
+} 
+
+### 
+DELETE http://localhost/periodosacademicos/3 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/periodosacademicos/3 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Nombre": "Periodo 2023-2"
+}
+
+// ******************* REST Client OfertasAcademicas ***********************
+### 
+GET http://localhost/ofertasacademicas/ HTTP/1.1
+### 
+GET http://localhost/ofertasacademicas/3 HTTP/1.1
+
+### 
+POST http://localhost/ofertasacademicas HTTP/1.1
+Content-Type: application/json
+
+{
+  "PeriodoAcademicoId": 1
+} 
+
+### 
+DELETE http://localhost/ofertasacademicas/10 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/ofertasacademicas/3 HTTP/1.1
+Content-Type: application/json
+
+{
+  "PeriodoAcademicoId": 2
+}
+
+// ******************* REST Client Matriculas ***********************
+### 
+GET http://localhost/matriculas/ HTTP/1.1
+### 
+GET http://localhost/matriculas/3 HTTP/1.1
+
+### 
+POST http://localhost/matriculas HTTP/1.1
+Content-Type: application/json
+
+{
+  "EstudianteId": 1,
+  "CursoId": 2,
+  "Estado": "Matriculado"
+} 
+
+### 
+DELETE http://localhost/matriculas/10 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/matriculas/101 HTTP/1.1
+Content-Type: application/json
+
+{
+  "EstudianteId": 1,
+  "CursoId": 2,
+  "Estado": "Retirado"
+}
+
+
+// ******************* REST Client HistoricosAcademicos ***********************
+### 
+GET http://localhost/historicosacademicos/ HTTP/1.1
+### 
+GET http://localhost/historicosacademicos/3 HTTP/1.1
+
+### 
+POST http://localhost/historicosacademicos HTTP/1.1
+Content-Type: application/json
+
+{
+  "EstudianteId": 10,
+  "CursoId": 2,
+  "Nota": 80.5
+} 
+
+### 
+DELETE http://localhost/historicosacademicos/10 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/historicosacademicos/3 HTTP/1.1
+Content-Type: application/json
+
+{
+  "EstudianteId": 8,
+  "CursoId": 2,
+  "Nota": 98.0
+}
+
+// ******************* REST Client Auditorias ***********************
+### 
+GET http://localhost/auditorias/ HTTP/1.1
+### 
+GET http://localhost/auditorias/3 HTTP/1.1
+
+### 
+POST http://localhost/auditorias HTTP/1.1
+Content-Type: application/json
+
+{
+  "Accion": "Nueva acción de auditoría de ejemplo",
+  "UsuarioId": 1
+} 
+
+### 
+DELETE http://localhost/auditorias/10 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/auditorias/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Accion": "Actualización de la acción",
+  "UsuarioId": 1
+}
+
+// ******************* REST Client Usuarios ***********************
+### 
+GET http://localhost/usuarios/ HTTP/1.1
+### 
+GET http://localhost/usuarios/2 HTTP/1.1
+
+### 
+POST http://localhost/usuarios HTTP/1.1
+Content-Type: application/json
+
+{
+  "Identificacion": "123456789",
+  "Login": "nuevo_usuario",
+  "Contrasena": "password123",
+  "Email": "nuevo_usuario@example.com",
+  "Rol": "Administrador"
+} 
+
+### 
+DELETE http://localhost/usuarios/3 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/usuarios/4 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Identificacion": "123456789",
+  "Login": "usuario_actualizado",
+  "Contrasena": "newpassword123",
+  "Email": "usuario_actualizado@example.com",
+  "Rol": "Administrador"
+}
+
+// ******************* REST Client Estudiantes ***********************
+### 
+GET http://localhost/estudiantes/ HTTP/1.1
+### 
+GET http://localhost/estudiantes/3 HTTP/1.1
+
+### 
+POST http://localhost/estudiantes HTTP/1.1
+Content-Type: application/json
+
+{
+  "Identificacion": "123456789",
+  "Nombre": "Nuevo",
+  "Apellido1": "Estudiante",
+  "Apellido2": "Ejemplo",
+  "Correo": "nuevo.estudiante@example.com",
+  "Direccion": "Dirección del nuevo estudiante",
+  "Telefono": "+1234567890"
+} 
+
+### 
+DELETE http://localhost/estudiantes/10 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/estudiantes/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Identificacion": "987654321",
+  "Nombre": "Actualizado",
+  "Apellido1": "Estudiante",
+  "Apellido2": "Ejemplo",
+  "Correo": "actualizado.estudiante@example.com",
+  "Direccion": "Dirección actualizada del estudiante",
+  "Telefono": "+0987654321"
+}
+
+// ******************* REST Client Docentes ***********************
+### 
+GET http://localhost/docentes/ HTTP/1.1
+### 
+GET http://localhost/docentes/104 HTTP/1.1
+
+### 
+POST http://localhost/docentes HTTP/1.1
+Content-Type: application/json
+
+{
+  
+  "Identificacion": "113070820",
+  "Nombre": "Carol",
+  "Apellido1": "Enriquez",
+  "Apellido2": "Vargas",
+  "Correo": "k_teve@hotmail.com",
+  "Direccion": "San José, Desamparados, San Miguel",
+  "Telefono": "+506 8394-9351"
+  
+} 
+
+### 
+DELETE http://localhost/docentes/104 HTTP/1.1
+Content-Type: application/json  
+
+### 
+PUT http://localhost/docentes/104 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Identificacion": "113070820",
+  "Nombre": "Carol",
+  "Apellido1": "Enriquez",
+  "Apellido2": "Vargas",
+  "Correo": "k_tev@gmail.com",
+  "Direccion": "San José, Desamparados, San Miguel",
+  "Telefono": "+506 8394-9351"
+
+}
+
+// ******************* REST Client Provincias ***********************
+
+###
+GET http://localhost/provincias/ HTTP/1.1
+
+###
+GET http://localhost/provincias/3 HTTP/1.1
+
+###
+POST http://localhost/provincias HTTP/1.1
+Content-Type: application/json
+
+{
+  "Provincia": "Nueva provincia"
+}
+
+###
+DELETE http://localhost/provincias/9 HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http://localhost/provincias/10 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Provincia": "Actualización de la provincia 10"
+}
+
+# ******************* REST Client Cantones ***********************
+###
+GET http://localhost/cantones/ HTTP/1.1
+
+###
+GET http://localhost/cantones/3 HTTP/1.1
+
+###
+POST http://localhost/cantones HTTP/1.1
+Content-Type: application/json
+
+{
+  "Canton": "Nuevo cantón",
+  "ProvinciaId": 1
+}
+
+###
+DELETE http://localhost/cantones/10 HTTP/1.1    
+Content-Type: application/json
+
+###
+PUT http://localhost/cantones/13 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Canton": "Actualización del cantón 10",
+  "ProvinciaId": 1
+}
+
+# ******************* REST Client Distritos ***********************
+
+###
+GET http://localhost/distritos/ HTTP/1.1
+###
+GET http://localhost/distritos/3 HTTP/1.1
+
+###
+POST http://localhost/distritos HTTP/1.1
+Content-Type: application/json
+
+{
+    "Distrito": "Nuevo distrito",
+    "CantonId": 1
+}
+
+###
+DELETE http://localhost/distritos/10 HTTP/1.1
+Content-Type: application/json
+
+###
+PUT http://localhost/distritos/13 HTTP/1.1
+Content-Type: application/json
+
+{
+    "Distrito": "Actualización del distrito 10",
+    "CantonId": 1
+}
+
+
+
+
