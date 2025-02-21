@@ -1,0 +1,159 @@
+/* Establece el comportamiento por defecto de todos los elementos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Establece la tipografía básica de la página */
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Barra de navegación */
+.navbar {
+  background-color: #16395e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Estilo de la marca (nombre de la aplicación) en la barra de navegación */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+/* Estilos para los enlaces dentro de la barra de navegación */
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
+}
+
+/* Efecto al pasar el ratón sobre los enlaces */
+.navbar a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+/* Estilo del menú principal */
+.nav-menu {
+  display: flex;
+  list-style: none;
+}
+
+/* Estilo de cada ítem de menú */
+.nav-item {
+  position: relative;
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 160px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  list-style: none;
+  padding: 0;
+  z-index: 1000;
+}
+
+/* Estilo de los enlaces dentro del menú desplegable */
+.dropdown-menu a {
+  color: black;
+  padding: 10px;
+  display: block;
+}
+
+/* Efecto al pasar el ratón sobre los enlaces del menú desplegable */
+.dropdown-menu a:hover {
+  background: #f1f1f1;
+}
+
+/* Mostrar el menú desplegable cuando el ítem del menú está en hover */
+.nav-item:hover .dropdown-menu {
+  display: block;
+}
+
+/* Estilos para el botón de hamburguesa en dispositivos móviles */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Estilos para el checkbox en dispositivos móviles */
+#menu-toggle {
+  display: none;
+}
+
+/* Estilos específicos para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background: #007bff;
+    z-index: 999;
+  }
+
+  #menu-toggle:checked~.nav-menu {
+    display: flex;
+  }
+
+  .dropdown-menu {
+    position: relative;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+
+/* Título de la aplicación */
+.app-title {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 2rem;
+  color: #333;
+  flex-grow: 1;
+  padding-bottom: 50px;
+}
+
+/* Footer */
+.footer {
+  background-color: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Estilo para el párrafo dentro del footer */
+.footer p {
+  margin: 0;
+}
