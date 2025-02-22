@@ -7,3 +7,22 @@
     flex-grow: 1;
     padding-bottom: 50px;
 }
+/* Título de la aplicación */
+.app-title {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 2rem;
+    color: #333;
+    flex-grow: 1;
+    padding-bottom: 50px;
+}
+
+/* Título de la aplicación */
+.app-title {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 2rem;
+    color: #333;
+    flex-grow: 1;
+    padding-bottom: 50px;
+}

@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './historico-academico.component.css'
 })
 export class HistoricoAcademicoComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Historico Academico';
+ subtitle = 'Historico academico de la aplicación';
 }

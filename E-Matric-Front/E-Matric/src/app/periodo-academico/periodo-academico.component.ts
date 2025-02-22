@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './periodo-academico.component.css'
 })
 export class PeriodoAcademicoComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Auditoría';
+ subtitle = 'Auditoría de la aplicación';
 }

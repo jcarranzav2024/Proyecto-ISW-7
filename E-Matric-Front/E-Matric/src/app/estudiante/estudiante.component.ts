@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './estudiante.component.css'
 })
 export class EstudianteComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Estudiante';
+ subtitle = 'Estudiantes de la aplicación';
 }

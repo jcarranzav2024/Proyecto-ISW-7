@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './provincias.component.css'
 })
 export class ProvinciasComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Provincias';
+ subtitle = 'Provincias de la aplicación';
 }

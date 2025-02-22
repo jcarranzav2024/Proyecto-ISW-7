@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './oferta-academica.component.css'
 })
 export class OfertaAcademicaComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Oferta Académica';
+ subtitle = 'Ofertas academicas de la aplicación';
 }

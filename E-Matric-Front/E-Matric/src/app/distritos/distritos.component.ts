@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './distritos.component.css'
 })
 export class DistritosComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Distritos';
+ subtitle = 'Distritos de la aplicación';
 }

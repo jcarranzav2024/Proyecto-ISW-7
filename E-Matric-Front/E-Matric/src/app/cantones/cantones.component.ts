@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './cantones.component.css'
 })
 export class CantonesComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Cantones';
+ subtitle = 'Cantones de la aplicación';
 }

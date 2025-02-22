@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './matricula.component.css'
 })
 export class MatriculaComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Matrícula';
+ subtitle = 'Matriculas de la aplicación';
 }

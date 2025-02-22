@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './horario.component.css'
 })
 export class HorarioComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Horario';
+ subtitle = 'Horarios de la aplicación';
 }

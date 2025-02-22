@@ -114,7 +114,7 @@ body {
     position: absolute;
     top: 50px;
     left: 0;
-    background: #007bff;
+    background: #818e9c;
     z-index: 999;
   }
 
@@ -157,3 +157,12 @@ body {
 .footer p {
   margin: 0;
 }
+
+
+.app-logo {
+  max-width: 350px; /* Ajusta el tamaño de la imagen */
+  display: block;
+  margin: 10px auto; /* Centra la imagen debajo del título */
+}
+
+

@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './curso.component.css'
 })
 export class CursoComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Curso';
+ subtitle = 'Cursos de la aplicación';
 }

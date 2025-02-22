@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrl: './plan-estudio.component.css'
 })
 export class PlanEstudioComponent {
-
+ // La propiedad que contiene el nombre del componente
+ title = 'Plan de Estudio';
+ subtitle = 'Plan de estudio de la aplicación';
 }
