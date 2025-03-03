@@ -39,12 +39,37 @@ class Provincias {
   async Borrar(ProvinciaId) {
     let resultado;
     try {
+      // Buscar todos los cantones de la provincia
+      const cantones = await prisma.cantones.findMany({
+        where: {
+          ProvinciaId: parseInt(ProvinciaId),
+        },
+      });
+
+      // Borrar todos los distritos de cada canton
+      for (const canton of cantones) {
+        await prisma.distritos.deleteMany({
+          where: {
+            CantonId: canton.CantonId,
+          },
+        });
+      }
+
+      // Borrar todos los cantones de la provincia
+      await prisma.cantones.deleteMany({
+        where: {
+          ProvinciaId: parseInt(ProvinciaId),
+        },
+      });
+
+      // Borrar la provincia
       resultado = await prisma.provincias.delete({
         where: {
           ProvinciaId: parseInt(ProvinciaId),
         },
       });
-      return { message: `Provincia con ID ${ProvinciaId} borrada correctamente` };
+
+      return { message: `Provincia con ID ${ProvinciaId} y sus cantones y distritos asociados borrados correctamente` };
     } catch (error) {
       console.error(`No se pudo borrar la provincia ${ProvinciaId} debido al error: ${error}`);
       throw error;

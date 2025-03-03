@@ -76,7 +76,7 @@ Content-Type: application/json
 } 
 
 ###
-DELETE http://localhost/cursos/142 HTTP/1.1
+DELETE http://localhost/cursos/138 HTTP/1.1
 Content-Type: application/json  
 
 ###
@@ -87,7 +87,7 @@ Content-Type: application/json
   "MateriaId": 1,
   "DocenteId": 2,
   "OfertaAcademicaId": 3,
-  "Cupo": 35,
+  "Cupo": 30,
   "Aula": "Aula 102",
   "HorarioId": 1
 }
@@ -340,7 +340,7 @@ Content-Type: application/json
 ### 
 GET http://localhost/docentes/ HTTP/1.1
 ### 
-GET http://localhost/docentes/104 HTTP/1.1
+GET http://localhost/docentes/7 HTTP/1.1
 
 ### 
 POST http://localhost/docentes HTTP/1.1
@@ -359,15 +359,15 @@ Content-Type: application/json
 } 
 
 ### 
-DELETE http://localhost/docentes/104 HTTP/1.1
+DELETE http://localhost/docentes/40 HTTP/1.1
 Content-Type: application/json  
 
 ### 
-PUT http://localhost/docentes/104 HTTP/1.1
+PUT http://localhost/docentes/40 HTTP/1.1
 Content-Type: application/json
 
 {
-  "Identificacion": "113070820",
+  "Identificacion": "113074420",
   "Nombre": "Carol",
   "Apellido1": "Enriquez",
   "Apellido2": "Vargas",
@@ -394,7 +394,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost/provincias/9 HTTP/1.1
+DELETE http://localhost/provincias/7 HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -410,14 +410,14 @@ Content-Type: application/json
 GET http://localhost/cantones/ HTTP/1.1
 
 ###
-GET http://localhost/cantones/3 HTTP/1.1
+GET http://localhost/cantones/104 HTTP/1.1
 
 ###
 POST http://localhost/cantones HTTP/1.1
 Content-Type: application/json
 
 {
-  "Canton": "Nuevo cantón",
+  "Canton": "Nuevo cantón 2",
   "ProvinciaId": 1
 }
 
@@ -439,28 +439,30 @@ Content-Type: application/json
 ###
 GET http://localhost/distritos/ HTTP/1.1
 ###
-GET http://localhost/distritos/3 HTTP/1.1
+GET http://localhost/distritos/70630 HTTP/1.1
 
 ###
 POST http://localhost/distritos HTTP/1.1
 Content-Type: application/json
 
 {
-    "Distrito": "Nuevo distrito",
-    "CantonId": 1
+    "Distrito": "Nuevo distrito 332",
+    "CantonId": 101,
+    "Valoracion":"Bueno"
 }
 
 ###
-DELETE http://localhost/distritos/10 HTTP/1.1
+DELETE http://localhost/distritos/70630 HTTP/1.1
 Content-Type: application/json
 
 ###
-PUT http://localhost/distritos/13 HTTP/1.1
+PUT http://localhost/distritos/70613 HTTP/1.1
 Content-Type: application/json
 
 {
-    "Distrito": "Actualización del distrito 10",
-    "CantonId": 1
+    "Distrito": "Actualización del distrito 10",   
+    "CantonId": 101,
+    "Valoracion":"Bueno"
 }
 
 

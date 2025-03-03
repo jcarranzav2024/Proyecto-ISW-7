@@ -23,20 +23,19 @@ class Auditoria {
     }
   }
 
-  async Agregar(req, res) {
-    const { Accion, UsuarioId } = req.body;
+  async Agregar({ Accion, UsuarioId }) {
     try {
       const resultado = await prisma.auditoria.create({
         data: {
           Accion: Accion,
           UsuarioId: UsuarioId,
-          CreadoEn: new Date()
+          CreadoEn: new Date() // ISO-8601 DateTime
         }
       });
-      res.json(resultado);
+      return resultado;
     } catch (error) {
       console.error(`No se pudo insertar la auditoría debido al error: ${error}`);
-      res.status(500).json({ error: 'Error al agregar auditoría' });
+      throw new Error('Error al agregar auditoría');
     }
   }
 

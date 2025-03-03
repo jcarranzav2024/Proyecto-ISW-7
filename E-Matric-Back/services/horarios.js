@@ -8,15 +8,28 @@ class Horario {
 
   async Listar(HorarioId) {
     try {
+      let horarios;
       if (HorarioId === undefined) {
-        return await prisma.horario.findMany();
+        horarios = await prisma.horario.findMany();
       } else {
-        return await prisma.horario.findMany({
+        horarios = await prisma.horario.findMany({
           where: {
             HorarioId: parseInt(HorarioId),
           },
         });
       }
+
+      // Formatear HoraInicio y HoraFin para que solo devuelvan la hora en formato militar
+      const formattedHorarios = horarios.map(horario => {
+        return {
+          ...horario,
+          HoraInicio: new Date(horario.HoraInicio).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          HoraFin: new Date(horario.HoraFin).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          ActualizadoEn: horario.ActualizadoEn // Incluir el campo ActualizadoEn
+        };
+      });
+
+      return formattedHorarios;
     } catch (error) {
       console.error('Error al listar horarios:', error);
       throw error;
@@ -26,12 +39,15 @@ class Horario {
   async Agregar(req, res) {
     const { Dia, HoraInicio, HoraFin } = req.body;
     try {
+      // Convertir las horas de string a Date
+      const horaInicioDate = new Date(`1970-01-01T${HoraInicio}:00`);
+      const horaFinDate = new Date(`1970-01-01T${HoraFin}:00`);
+
       const resultado = await prisma.horario.create({
         data: {
           Dia: Dia,
-          HoraInicio: new Date(HoraInicio),
-          HoraFin: new Date(HoraFin),
-          
+          HoraInicio: horaInicioDate,
+          HoraFin: horaFinDate,
         }
       });
       res.json(resultado);
@@ -52,13 +68,15 @@ class Horario {
         throw new Error(`Horario con ID ${HorarioId} no encontrado`);
       }
 
+      // Construir el objeto de datos a actualizar dinámicamente
+      const dataToUpdate = {};
+      if (Dia !== undefined) dataToUpdate.Dia = Dia;
+      if (HoraInicio !== undefined) dataToUpdate.HoraInicio = new Date(`1970-01-01T${HoraInicio}:00`);
+      if (HoraFin !== undefined) dataToUpdate.HoraFin = new Date(`1970-01-01T${HoraFin}:00`);
+
       const resultado = await prisma.horario.update({
         where: { HorarioId: parseInt(HorarioId) },
-        data: {
-          Dia: Dia,
-          HoraInicio: new Date(HoraInicio),
-          HoraFin: new Date(HoraFin),
-        },
+        data: dataToUpdate,
       });
 
       res.json({ message: `Horario con ID ${HorarioId} actualizado correctamente`, resultado });

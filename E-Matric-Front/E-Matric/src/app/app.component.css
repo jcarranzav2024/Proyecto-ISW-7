@@ -12,7 +12,7 @@ body {
 
 /* Barra de navegación */
 .navbar {
-  background-color: #16395e;
+  background-color: #214892;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -160,9 +160,9 @@ body {
 
 
 .app-logo {
-  max-width: 350px; /* Ajusta el tamaño de la imagen */
+  max-width: 70px; /* Ajusta el tamaño de la imagen */
   display: block;
-  margin: 10px auto; /* Centra la imagen debajo del título */
+  margin: 1px auto; /* Centra la imagen debajo del título */
 }
 
 

@@ -24,12 +24,13 @@ class Matricula {
   }
 
   async Agregar(req, res) {
-    const { EstudianteId, CursoId, Estado } = req.body;
+    const { EstudianteId, CursoId, Tipo,Estado } = req.body;
     try {
       const resultado = await prisma.matricula.create({
         data: {
           EstudianteId: EstudianteId,
           CursoId: CursoId,
+          Tipo: Tipo,
           Estado: Estado,
           
         }
@@ -42,7 +43,7 @@ class Matricula {
   }
 
   async Actualizar(MatriculaId, req, res) {
-    const { EstudianteId, CursoId, Estado } = req.body;
+    const { EstudianteId, CursoId,Tipo, Estado } = req.body;
     try {
       const matriculaExistente = await prisma.matricula.findUnique({
         where: { MatriculaId: parseInt(MatriculaId) },
@@ -57,6 +58,7 @@ class Matricula {
         data: {
           EstudianteId: EstudianteId,
           CursoId: CursoId,
+          Tipo: Tipo,
           Estado: Estado,
         },
       });

@@ -1,20 +1,108 @@
 
 /* Título de la aplicación */
 .app-title {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 2rem;
-    color: #333;
-    flex-grow: 1;
-    padding-bottom: 50px;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 2rem;
+  color: #333;
+  flex-grow: 1;
+  padding-bottom: 50px;
 }
 
-/* Título de la aplicación */
-.app-title {
+/* Estilo general para el contenedor */
+.cantones-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-top: 50px;
-    font-size: 2rem;
+  }
+  
+  .cantones-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
     color: #333;
+  }
+  
+  /* Lista de cantones */
+  .cantones-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .canton-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 8px 0;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  .canton-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .canton-id {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .canton-input {
     flex-grow: 1;
-    padding-bottom: 50px;
-}
+    padding: 8px;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+  }
+  
+  .canton-input:focus {
+    border-color: #007bff;
+  }
+  
+  .delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .delete-btn:hover {
+    background-color: #e43f3f;
+  }
+  
+  .empty-message {
+    font-size: 16px;
+    color: #777;
+  }
+  
+  .add-canton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .add-input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+  }
+  
+  .add-input:focus {
+    border-color: #007bff;
+  }
+  

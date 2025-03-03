@@ -56,17 +56,18 @@ class Estudiante {
         throw new Error(`Estudiante con ID ${EstudianteId} no encontrado`);
       }
 
+      const data = {};
+      if (Identificacion !== undefined) data.Identificacion = Identificacion;
+      if (Nombre !== undefined) data.Nombre = Nombre;
+      if (Apellido1 !== undefined) data.Apellido1 = Apellido1;
+      if (Apellido2 !== undefined) data.Apellido2 = Apellido2;
+      if (Correo !== undefined) data.Correo = Correo;
+      if (Direccion !== undefined) data.Direccion = Direccion;
+      if (Telefono !== undefined) data.Telefono = Telefono;
+
       const resultado = await prisma.estudiante.update({
         where: { EstudianteId: parseInt(EstudianteId) },
-        data: {
-          Identificacion: Identificacion,
-          Nombre: Nombre,
-          Apellido1: Apellido1,
-          Apellido2: Apellido2,
-          Correo: Correo,
-          Direccion: Direccion,
-          Telefono: Telefono,
-        },
+        data,
       });
 
       res.json({ message: `Estudiante con ID ${EstudianteId} actualizado correctamente`, resultado });

@@ -28,6 +28,7 @@ model Materia {
   Cursos          Curso[]     
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
+  Estado          Boolean @default(true)
 }
 
 // Plan de Estudios: Contiene la lista de materias asociadas a un programa académico.
@@ -38,24 +39,27 @@ model PlanEstudio {
   Materias        Materia[] @relation("MateriasEnPlan")
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
+  Estado          Boolean @default(true)
 }
 
 // Cursos: Representa la oferta de una materia específica con un docente y un aula asignada.
 model Curso {
   CursoId           Int      @id @default(autoincrement())
   MateriaId         Int
-  DocenteId         Int
+  DocenteId         Int?
   OfertaAcademicaId Int
   Cupo              Int
   Aula              String
   Materia           Materia  @relation(fields: [MateriaId], references: [MateriaId])
-  Docente           Docente  @relation("CursosDocente", fields: [DocenteId], references: [DocenteId])
+  Docente           Docente? @relation("CursosDocente", fields: [DocenteId], references: [DocenteId], onDelete: SetNull)
   OfertaAcademica   OfertaAcademica @relation("ModeloDeCursosOfertas", fields: [OfertaAcademicaId], references: [OfertaAcademicaId])
-  Estudiantes       Matricula[]
-  HorarioId         Int
+  Estudiantes       Matricula[] @relation("CursoMatricula")
+  HorarioId         Int?
   Historico         HistoricoAcademico[] @relation("HistoricoCurso")
+  CursoHistorico    HistoricoAcademico[] @relation("Historico")
   CreadoEn          DateTime @default(now())
   ActualizadoEn     DateTime @default(now()) @updatedAt
+  Estado            Boolean @default(true)
 }
 
 
@@ -65,7 +69,9 @@ model Horario {
   Dia        String
   HoraInicio DateTime @db.Time
   HoraFin    DateTime @db.Time 
-  CreadoEn  DateTime @db.Time @default(now())
+  CreadoEn  DateTime  @default(now())
+  ActualizadoEn     DateTime @default(now()) @updatedAt
+  Estado    Boolean @default(true)
 }
 
 
@@ -76,6 +82,7 @@ model PeriodoAcademico {
   OfertaAcademica    OfertaAcademica[]
   CreadoEn           DateTime @default(now())
   ActualizadoEn      DateTime @default(now()) @updatedAt
+  Estado             Boolean @default(true)
 }
 
 // Oferta Académica: Contiene la lista de cursos disponibles en un período académico.
@@ -86,22 +93,23 @@ model OfertaAcademica {
   Cursos            Curso[] @relation("ModeloDeCursosOfertas")
   CreadoEn          DateTime @default(now())
   ActualizadoEn     DateTime @default(now()) @updatedAt
+  Estado            Boolean @default(true)
 }
 
 
 // Matrícula: Representa la inscripción de un estudiante en un curso.
 model Matricula {
   MatriculaId   Int      @id @default(autoincrement())
-  EstudianteId  Int
-  CursoId       Int
-  Estado        EstadoMatricula @default(Activo)
-  FechaRegistro DateTime @default(now())
-  Estudiante    Estudiante @relation(fields: [EstudianteId], references: [EstudianteId])
-  Curso         Curso @relation(fields: [CursoId], references: [CursoId])
+  EstudianteId  Int?
+  CursoId       Int?
+  Tipo        TipoMatricula @default(Matriculado)
+  FechaRegistro DateTime @default(now()) 
+  Curso         Curso? @relation("CursoMatricula", fields: [CursoId], references: [CursoId], onDelete: SetNull)
+  Estado       Boolean @default(true)
 }
 
 // Estado de la Matrícula: Define el estado de la inscripción de un estudiante en un curso.
-enum EstadoMatricula {
+enum TipoMatricula {
   Matriculado
   Activo
   Retirado
@@ -111,13 +119,15 @@ enum EstadoMatricula {
 // Histórico Académico: Guarda el registro de cursos matriculados y notas obtenidas por los estudiantes.
 model HistoricoAcademico {
   HistoricoAcademicoId Int  @id @default(autoincrement())
-  EstudianteId         Int
-  CursoId              Int
+  EstudianteId         Int?
+  CursoId              Int?
   Nota                 Float
-  Estudiante           Estudiante @relation(fields: [EstudianteId], references: [EstudianteId])
-  Curso                Curso      @relation("HistoricoCurso", fields: [CursoId], references: [CursoId])
+  Estudiante           Estudiante? @relation("EstudianteHistorico", fields: [EstudianteId], references: [EstudianteId])
+  Curso                Curso? @relation("HistoricoCurso", fields: [CursoId], references: [CursoId], onDelete: SetNull)
+  CursoHistorico       Curso[] @relation("Historico")
   CreadoEn             DateTime @default(now())
   ActualizadoEn        DateTime @default(now()) @updatedAt
+ 
 }
 
 
@@ -143,6 +153,7 @@ model Usuario {
   Auditorias      Auditoria[]
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
+  Estado          Boolean @default(true)
 }
 
 // Estudiantes: Almacena los datos personales y registros académicos de los estudiantes.
@@ -154,11 +165,11 @@ model Estudiante {
   Apellido2       String
   Correo          String
   Direccion       String
-  Telefono        String
-  Matriculas      Matricula[]
-  Historico       HistoricoAcademico[]
+  Telefono        String  
+  Historico       HistoricoAcademico[] @relation("EstudianteHistorico")
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
+  Estado          Boolean @default(true)
 }
 
 // Docentes: Contiene la información de los docentes y los cursos que imparten.
@@ -174,6 +185,7 @@ model Docente {
   Cursos          Curso[]  @relation("CursosDocente")
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
+  Estado          Boolean @default(true)
 }
 
 // Roles: Define los tipos de usuarios que pueden acceder al sistema y sus permisos.
@@ -190,28 +202,31 @@ model Provincias {
   Cantones    Cantones[] @relation("ModeloDeProvincias")
   FechaDeCreacion DateTime @default(now())
   ActualizadoEn DateTime @default(now()) @updatedAt
+  Estado      Boolean @default(true)
 }
 
 // Modelo de Cantones: Representa un cantón dentro de una provincia.
 model Cantones {
-  CantonId     Int @id
+  CantonId     Int @id @default(autoincrement())
   Canton       String
-  ProvinciaId  Int
-  Provincias   Provincias @relation("ModeloDeProvincias", fields: [ProvinciaId], references: [ProvinciaId])
+  ProvinciaId  Int?
+  Provincias   Provincias? @relation("ModeloDeProvincias", fields: [ProvinciaId], references: [ProvinciaId], onDelete: SetNull)
   Distritos    Distritos[]
   FechaDeCreacion DateTime @default(now())
   ActualizadoEn DateTime @default(now()) @updatedAt
+  Estado      Boolean @default(true)
 }
 
 // Modelo de Distritos: Representa un distrito dentro de un cantón.
 model Distritos {
-  DistritoId   Int @id 
+  DistritoId   Int @id @default(autoincrement())
   Distrito     String
-  CantonId     Int
-  Cantones     Cantones @relation(fields: [CantonId], references: [CantonId])
+  CantonId     Int?
+  Cantones     Cantones? @relation(fields: [CantonId], references: [CantonId], onDelete: SetNull)
   FechaDeCreacion DateTime @default(now())
   ActualizadoEn DateTime @default(now()) @updatedAt
   Valoracion   Valoracion @default(Bueno)
+  Estado      Boolean @default(true)
 }
 
 // Enum de Valoración: Define la calidad de vida o infraestructura en un distrito.

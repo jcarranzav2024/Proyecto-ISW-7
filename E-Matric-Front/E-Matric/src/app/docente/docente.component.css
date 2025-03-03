@@ -1,4 +1,3 @@
-
 /* Título de la aplicación */
 .app-title {
     text-align: center;
@@ -6,15 +5,25 @@
     font-size: 2rem;
     color: #333;
     flex-grow: 1;
-    padding-bottom: 50px;
+    padding-bottom: 10px;
 }
 
-/* Título de la aplicación */
-.app-title {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 2rem;
-    color: #333;
-    flex-grow: 1;
-    padding-bottom: 50px;
+.docentes-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.docente-item {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.docente-item div,
+.docente-item input,
+.docente-item button {
+  flex: 1 1 100px;
+  min-width: 100px;
 }

@@ -1,5 +1,6 @@
 // import { faker } from '@faker-js/faker'; 
-import { PrismaClient, EstadoMatricula } from "@prisma/client";
+import { PrismaClient, TipoMatricula } from "@prisma/client";
+
 
 import { fakerES_MX } from "@faker-js/faker";
 
@@ -1193,7 +1194,7 @@ async function main() {
       matriculas.push({
         EstudianteId: estudiante.EstudianteId,
         CursoId: curso.CursoId,
-        Estado: EstadoMatricula.Matriculado,
+        Tipo: TipoMatricula.Matriculado,
       });
     }
 

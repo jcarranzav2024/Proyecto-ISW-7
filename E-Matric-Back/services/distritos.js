@@ -24,13 +24,15 @@ class Distrito {
   }
 
   async Agregar(req, res) {
-    const { Distrito, CantonId } = req.body;
+    const { Distrito, CantonId, Valoracion } = req.body;
     try {
       const resultado = await prisma.distritos.create({
         data: {
           Distrito: Distrito,
           CantonId: CantonId,
-          FechaDeCreacion: new Date()
+          FechaDeCreacion: new Date(),
+          ActualizadoEn: new Date(),
+          Valoracion: Valoracion || 'Bueno' // Valor por defecto si no se proporciona
         }
       });
       res.json(resultado);
@@ -41,7 +43,7 @@ class Distrito {
   }
 
   async Actualizar(DistritoId, req, res) {
-    const { Distrito, CantonId } = req.body;
+    const { Distrito, CantonId, Valoracion } = req.body;
     try {
       const distritoExistente = await prisma.distritos.findUnique({
         where: { DistritoId: parseInt(DistritoId) },
@@ -56,6 +58,8 @@ class Distrito {
         data: {
           Distrito: Distrito,
           CantonId: CantonId,
+          Valoracion: Valoracion || distritoExistente.Valoracion, // Mantener la valoración existente si no se proporciona una nueva
+          ActualizadoEn: new Date() // Actualizar la fecha de actualización
         },
       });
 

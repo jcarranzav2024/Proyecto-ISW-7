@@ -1,6 +1,11 @@
-
 <nav class="navbar">
-  <a routerLink="/" class="navbar-brand">Inicio</a>
+  <div>
+    <a href="/" class="navbar-brand"><img
+      src="https://www.registro.una.ac.cr/images/Section-2/Anuncios/I%20Ciclo%202025/Datos%20de%20contacto%20web.png"
+      alt="Logo de E-Matric"
+      class="app-logo"
+    /></a>
+  </div>
 
   <input type="checkbox" id="menu-toggle" />
   <label for="menu-toggle" class="menu-toggle">☰</label>
@@ -9,53 +14,46 @@
     <li class="nav-item">
       <a href="#">Gestiones ▼</a>
       <ul class="dropdown-menu">
-        <li><a routerLink="/matricula">Matrícula</a></li>
-        <li><a routerLink="/curso">Cursos</a></li>
-        <li><a routerLink="/materia">Materias</a></li>
-        <li><a routerLink="/periodo-academico">Periodos</a></li>
-        <li><a routerLink="/oferta-academica">Oferta academica</a></li>
-        <li><a routerLink="/plan-estudio">Plan de estudio</a></li>
-        <li><a routerLink="/horario">Horarios</a></li>
+        <li><a  href="matricula/">Matrícula</a></li>
+        <li><a href="/curso">Cursos</a></li>
+        <li><a href="/materia">Materias</a></li>
+        <li><a href="/periodo-academico">Periodos</a></li>
+        <li><a href="/oferta-academica">Oferta academica</a></li>
+        <li><a href="/plan-estudio">Plan de estudio</a></li>
+        <li><a href="/horario">Horarios</a></li>
       </ul>
     </li>
     <li class="nav-item">
       <a href="#">Usuarios ▼</a>
       <ul class="dropdown-menu">
-        <li><a routerLink="/usuario">Usuarios</a></li>
-        <li><a routerLink="/estudiante">Estudiantes</a></li>
-        <li><a routerLink="/docente">Docentes</a></li>        
+        <li><a href="/usuario">Usuarios</a></li>
+        <li><a href="/estudiante">Estudiantes</a></li>
+        <li><a href="/docente">Docentes</a></li>
       </ul>
     </li>
     <li class="nav-item">
       <a href="#">Reportes ▼</a>
       <ul class="dropdown-menu">
-        <li><a routerLink="/auditoria">Auditorias</a></li>
-        <li><a routerLink="/historico-academico">Historial de notas</a></li>
+        <li><a href="/auditoria">Auditorias</a></li>
+        <li><a href="/historico-academico">Historial de notas</a></li>
       </ul>
     </li>
     <li class="nav-item">
       <a href="#">Localización ▼</a>
       <ul class="dropdown-menu">
-        <li><a routerLink="/provincias">Provincias</a></li>
-        <li><a routerLink="/cantones">Cantones</a></li>
-        <li><a routerLink="/distritos">Distritos</a></li>
+        <li><a href="/provincias">Provincias</a></li>
+        <li><a href="/cantones">Cantones</a></li>
+        <li><a href="/distritos">Distritos</a></li>
       </ul>
     </li>
-    <li class="nav-item"><a routerLink="/contacto">Contacto</a></li>
+    <li class="nav-item"><a href="/contacto">Contacto</a></li>
   </ul>
 </nav>
 
 <div class="app-title">
-  <h1>{{ title.toUpperCase() }}</h1>
-  <p>{{ subtitle.toUpperCase() }}</p>
-  <img src="https://www.registro.una.ac.cr/images/Section-2/Anuncios/I%20Ciclo%202025/Datos%20de%20contacto%20web.png" alt="Logo de E-Matric" class="app-logo">
+ 
 </div>
 
 <!-- Contenedor donde se mostrarán los componentes -->
 <router-outlet></router-outlet>
-
-<!-- Footer -->
-<footer class="footer">
-  <p>&copy; 2025 E-Matric. Todos los derechos reservados.</p>
-</footer>
 

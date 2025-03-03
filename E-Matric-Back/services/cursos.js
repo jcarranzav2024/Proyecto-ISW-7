@@ -28,12 +28,12 @@ class Curso {
     try {
       const resultado = await prisma.curso.create({
         data: {
-          MateriaId: MateriaId,
-          DocenteId: DocenteId,
-          OfertaAcademicaId: OfertaAcademicaId,
-          Cupo: Cupo,
+          MateriaId: parseInt(MateriaId),
+          DocenteId: parseInt(DocenteId),
+          OfertaAcademicaId: parseInt(OfertaAcademicaId),
+          Cupo: parseInt(Cupo),
           Aula: Aula,
-          HorarioId: HorarioId,
+          HorarioId: parseInt(HorarioId),
           CreadoEn: new Date()
         }
       });
@@ -50,23 +50,24 @@ class Curso {
       const cursoExistente = await prisma.curso.findUnique({
         where: { CursoId: parseInt(CursoId) },
       });
-
+  
       if (!cursoExistente) {
         throw new Error(`Curso con ID ${CursoId} no encontrado`);
       }
-
+  
+      const data = {};
+      if (MateriaId !== undefined) data.MateriaId = parseInt(MateriaId);
+      if (DocenteId !== undefined) data.DocenteId = parseInt(DocenteId);
+      if (OfertaAcademicaId !== undefined) data.OfertaAcademicaId = parseInt(OfertaAcademicaId);
+      if (Cupo !== undefined) data.Cupo = parseInt(Cupo);
+      if (Aula !== undefined) data.Aula = Aula;
+      if (HorarioId !== undefined) data.HorarioId = parseInt(HorarioId);
+  
       const resultado = await prisma.curso.update({
         where: { CursoId: parseInt(CursoId) },
-        data: {
-          MateriaId: MateriaId,
-          DocenteId: DocenteId,
-          OfertaAcademicaId: OfertaAcademicaId,
-          Cupo: Cupo,
-          Aula: Aula,
-          HorarioId: HorarioId,
-        },
+        data,
       });
-
+  
       res.json({ message: `Curso con ID ${CursoId} actualizado correctamente`, resultado });
     } catch (error) {
       console.error(`No se pudo actualizar el curso ${CursoId} debido al error: ${error}`);

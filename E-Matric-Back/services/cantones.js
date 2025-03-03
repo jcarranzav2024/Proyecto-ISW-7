@@ -30,7 +30,8 @@ class Canton {
         data: {
           Canton: Canton,
           ProvinciaId: ProvinciaId,
-          FechaDeCreacion: new Date()
+          FechaDeCreacion: new Date(),
+          ActualizadoEn: new Date()
         }
       });
       res.json(resultado);
@@ -68,12 +69,21 @@ class Canton {
 
   async Borrar(CantonId) {
     try {
+      // Borrar todos los distritos asociados al cantón
+      await prisma.distritos.deleteMany({
+        where: {
+          CantonId: parseInt(CantonId),
+        },
+      });
+
+      // Borrar el cantón
       const resultado = await prisma.cantones.delete({
         where: {
           CantonId: parseInt(CantonId),
         },
       });
-      return { message: `Cantón con ID ${CantonId} borrado correctamente` };
+
+      return { message: `Cantón con ID ${CantonId} y sus distritos asociados borrados correctamente` };
     } catch (error) {
       console.error(`No se pudo borrar el cantón ${CantonId} debido al error: ${error}`);
       throw error;

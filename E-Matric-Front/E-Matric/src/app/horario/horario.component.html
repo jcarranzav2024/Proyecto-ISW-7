@@ -1,4 +1,59 @@
 <div class="app-title">
-    <h1>{{ title.toUpperCase() }}</h1>
-    <p>{{ subtitle}}</p>
-  </div>
+  <h1>{{ title.toUpperCase() }}</h1>
+  <p>{{ subtitle }}</p>
+</div>
+
+<ul class="horarios-list">
+  @for (Horario of Horarios(); track Horario.HorarioId) {
+    <li class="horario-item">
+      <div>
+        <label>ID:</label>
+        {{ Horario.HorarioId }}
+      </div>
+      <div>
+        <label>Día:</label>
+        <input type="text"
+          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'horaInicioInput' + Horario.HorarioId)"
+          [value]="Horario.Dia"
+          name="Dia"
+          id="diaInput{{Horario.HorarioId}}"
+        />
+      </div>
+      <div>
+        <label>Hora Inicio:</label>
+        <input type="time"
+          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'horaFinInput' + Horario.HorarioId)"
+          [value]="Horario.HoraInicio"
+          name="HoraInicio"
+          id="horaInicioInput{{Horario.HorarioId}}"
+        />
+      </div>
+      <div>
+        <label>Hora Fin:</label>
+        <input type="time"
+          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'nextInput' + Horario.HorarioId)"
+          [value]="Horario.HoraFin"
+          name="HoraFin"
+          id="horaFinInput{{Horario.HorarioId}}"
+        />
+      </div>
+      <button (click)="borrarHorario(Horario.HorarioId)">Borrar horario {{ Horario.HorarioId }}</button>
+    </li>
+  } @empty {
+    <li>Nada que mostrar.</li>
+  }
+  <li class="horario-item">
+    <select #diaInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'horaInicioInput')">
+      <option value="Lunes">Lunes</option>
+      <option value="Martes">Martes</option>
+      <option value="Miércoles">Miércoles</option>
+      <option value="Jueves">Jueves</option>
+      <option value="Viernes">Viernes</option>
+      <option value="Sábado">Sábado</option>
+      <option value="Domingo">Domingo</option>
+    </select>
+    <input placeholder="Hora Inicio" type="time" #horaInicioInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'horaFinInput')" />
+    <input placeholder="Hora Fin" type="time" #horaFinInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'nextInput')" />
+    <button (click)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value)">Agregar</button>
+  </li>
+</ul>

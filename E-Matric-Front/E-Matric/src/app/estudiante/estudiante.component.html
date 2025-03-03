@@ -1,4 +1,91 @@
 <div class="app-title">
-    <h1>{{ title.toUpperCase() }}</h1>
-    <p>{{ subtitle}}</p>
-  </div>
+  <h1>{{ title.toUpperCase() }}</h1>
+  <p>{{ subtitle }}</p>
+</div>
+
+<ul class="estudiantes-list">
+  @for (Estudiante of Estudiantes(); track Estudiante.EstudianteId) {
+    <li class="estudiante-item">
+      <div>
+        <label>ID:</label>
+        {{ Estudiante.EstudianteId }}
+      </div>
+      <div>
+        <label>Identificación:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'nombreInput' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Identificacion"
+          name="Identificacion"
+          id="identificacionInput{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Nombre:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'apellido1Input' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Nombre"
+          name="Nombre"
+          id="nombreInput{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Apellido1:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'apellido2Input' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Apellido1"
+          name="Apellido1"
+          id="apellido1Input{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Apellido2:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'correoInput' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Apellido2"
+          name="Apellido2"
+          id="apellido2Input{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Correo:</label>
+        <input type="email"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'direccionInput' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Correo"
+          name="Correo"
+          id="correoInput{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Dirección:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'telefonoInput' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Direccion"
+          name="Direccion"
+          id="direccionInput{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <div>
+        <label>Teléfono:</label>
+        <input type="text"
+          (keydown.enter)="modificarEstudiante(Estudiante.EstudianteId, $event); nextField($event, 'nextInput' + Estudiante.EstudianteId)"
+          [value]="Estudiante.Telefono"
+          name="Telefono"
+          id="telefonoInput{{Estudiante.EstudianteId}}"
+        />
+      </div>
+      <button (click)="borrarEstudiante(Estudiante.EstudianteId)">Borrar estudiante {{ Estudiante.EstudianteId }}</button>
+    </li>
+  } @empty {
+    <li>Nada que mostrar.</li>
+  }
+  <li class="estudiante-item">
+    <input placeholder="Identificación" type="text" #identificacionInput (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'nombreInput')" />
+    <input placeholder="Nombre" type="text" #nombreInput (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'apellido1Input')" />
+    <input placeholder="Apellido1" type="text" #apellido1Input (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'apellido2Input')" />
+    <input placeholder="Apellido2" type="text" #apellido2Input (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'correoInput')" />
+    <input placeholder="Correo" type="email" #correoInput (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'direccionInput')" />
+    <input placeholder="Dirección" type="text" #direccionInput (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'telefonoInput')" />
+    <input placeholder="Teléfono" type="text" #telefonoInput (keydown.enter)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'nextInput')" />
+    <button (click)="agregarEstudiante(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value)">Agregar</button>
+  </li>
+</ul>

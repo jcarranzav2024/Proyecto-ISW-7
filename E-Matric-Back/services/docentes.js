@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-
+const Auditoria = require('./auditorias');
 const prisma = new PrismaClient();
+const auditoria = new Auditoria();
 
 class Docente {
 
@@ -38,6 +39,15 @@ class Docente {
           CreadoEn: new Date()
         }
       });
+
+       // Registrar la acción en auditoría
+       await auditoria.Agregar({
+        body: {
+          Accion: `Agregar docente con la identificación ${Identificacion}`,
+          UsuarioId: 1
+        }
+      }, res);
+
       res.json(resultado);
     } catch (error) {
       console.error(`No se pudo insertar el docente debido al error: ${error}`);
@@ -69,6 +79,14 @@ class Docente {
         },
       });
 
+         // Registrar la acción en auditoría
+         await auditoria.Agregar({
+          body: {
+            Accion: `Actualizar docente con la identificación ${Identificacion}`,
+            UsuarioId: 1
+          }
+        }, res);
+
       res.json({ message: `Docente con ID ${DocenteId} actualizado correctamente`, resultado });
     } catch (error) {
       console.error(`No se pudo actualizar el docente ${DocenteId} debido al error: ${error}`);
@@ -76,17 +94,43 @@ class Docente {
     }
   }
 
-  async Borrar(DocenteId) {
+  async Borrar(DocenteId, res) {
+    const id = parseInt(DocenteId);
+  
     try {
-      const resultado = await prisma.docente.delete({
-        where: {
-          DocenteId: parseInt(DocenteId),
-        },
+      const resultado = await prisma.$transaction(async (prisma) => {
+        // Actualizar los cursos para eliminar la referencia al docente
+        await prisma.curso.updateMany({
+          where: { DocenteId: id },
+          data: { DocenteId: null }
+        });
+  
+        // Eliminar el docente
+        await prisma.docente.delete({
+          where: {
+            DocenteId: id,
+          },
+        });
+
+        // Registrar la acción en auditoría
+        await auditoria.Agregar({
+          Accion: `Borrar docente con el id: ${DocenteId}`,
+          UsuarioId: 1
+        });
+  
+        return { message: `Docente con ID ${DocenteId} borrado correctamente` };
       });
-      return { message: `Docente con ID ${DocenteId} borrado correctamente` };
+  
+      if (res) {
+        res.json(resultado);
+      } else {
+        console.error('Response object is undefined');
+      }
     } catch (error) {
       console.error(`No se pudo borrar el docente ${DocenteId} debido al error: ${error}`);
-      throw error;
+      if (res) {
+        res.status(500).json({ error: error.message || 'Error al borrar docente' });
+      }
     }
   }
 }
