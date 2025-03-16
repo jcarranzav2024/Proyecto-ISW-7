@@ -1,91 +1,143 @@
-<div class="app-title">
-  <h1>{{ title.toUpperCase() }}</h1>
-  <p>{{ subtitle }}</p>
+<div class="container" style="padding-top: 60px;"> 
+  <div class="card">
+    <h1 class="center">{{ title }}</h1> 
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarDocentes()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarDocentes()" class="wide-input">
+          <option value="Identificacion">Identificación</option>
+          <option value="Nombre">Nombre</option>
+          <option value="Apellido1">Apellido1</option>
+          <option value="Apellido2">Apellido2</option>
+          <option value="Correo">Correo</option>
+          <option value="Direccion">Dirección</option>
+          <option value="Telefono">Teléfono</option>
+        </select>
+      </div>
+      <div class="right-inputs">       
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>         
+          <th>Identificación</th>
+          <th>Nombre</th>
+          <th>Apellido1</th>
+          <th>Apellido2</th>
+          <th>Correo</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Docente of docentesFiltrados; trackBy: trackByDocenteId">
+          <td>{{ Docente.Identificacion }}</td>
+          <td>{{ Docente.Nombre }}</td>
+          <td>{{ Docente.Apellido1 }}</td>
+          <td>{{ Docente.Apellido2 }}</td>
+          <td>{{ Docente.Correo }}</td>
+          <td>{{ Docente.Direccion }}</td>
+          <td>{{ Docente.Telefono }}</td>
+          <td class="action-buttons">
+            <button (click)="editDocente(Docente)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="desactivarDocente(Docente.DocenteId, !Docente.Estado)" [ngClass]="Docente.Estado ? 'btn-toggle-activate' : 'btn-toggle-deactivate'" [attr.title]="Docente.Estado ? 'Desactivar' : 'Activar'">
+              <i class="fas" [ngClass]="Docente.Estado ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </button>
+            
+          </td>
+        </tr>
+        <tr *ngIf="docentesFiltrados.length === 0">
+          <td colspan="8">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<ul class="docentes-list">
-  @for (Docente of Docentes(); track Docente.DocenteId) {
-    <li class="docente-item">
-      <div>
-        <label>ID:</label>
-        {{ Docente.DocenteId }}
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputDocenteId === '' ? 'Crear Docente' : 'Editar Docente' }}</h2>
+    
+    <!-- Contenedor principal del formulario -->
+    <div class="form-group-container">
+      
+      <!-- Primera columna de campos -->
+      <div class="form-group-column">
+        <div class="form-group">
+          <label for="inputIdentificacion">Identificación: </label>
+          <input id="inputIdentificacion" [(ngModel)]="inputIdentificacion" type="text" class="wide-input"/>
+        </div>  
+        <div class="form-group">
+          <label for="inputApellido2">Apellido2: </label>
+          <input id="inputApellido2" [(ngModel)]="inputApellido2" type="text" class="wide-input"/>
+        </div>
+        <div class="form-group">
+          <label for="inputProvincia">Provincia: </label>
+          <select id="inputProvincia" [(ngModel)]="inputProvinciaId" (change)="onProvinciaChange()" class="wide-input">
+            <option *ngFor="let provincia of Provincias()" [value]="provincia.ProvinciaId">{{ provincia.Provincia }}</option>
+          </select>
+        </div>
       </div>
-      <div>
-        <label>Identificación:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'nombreInput' + Docente.DocenteId)"
-          [value]="Docente.Identificacion"
-          name="Identificacion"
-          id="identificacionInput{{Docente.DocenteId}}"
-        />
+
+      <!-- Segunda columna de campos -->
+      <div class="form-group-column"> 
+        <div class="form-group">
+          <label for="inputNombre">Nombre: </label>
+          <input id="inputNombre" [(ngModel)]="inputNombre" type="text" class="wide-input"/>
+        </div>            
+        <div class="form-group">
+          <label for="inputTelefono">Teléfono: </label>
+          <input id="inputTelefono" [(ngModel)]="inputTelefono" type="text" class="wide-input"/>
+        </div> 
+        <div class="form-group">
+          <label for="inputCanton">Cantón: </label>
+          <select id="inputCanton" [(ngModel)]="inputCantonId" (change)="onCantonChange()" class="wide-input">
+            <option *ngFor="let canton of CantonesFiltrados" [value]="canton.CantonId">{{ canton.Canton }}</option>
+          </select>
+        </div>      
       </div>
-      <div>
-        <label>Nombre:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'apellido1Input' + Docente.DocenteId)"
-          [value]="Docente.Nombre"
-          name="Nombre"
-          id="nombreInput{{Docente.DocenteId}}"
-        />
+
+      <!-- Tercera columna de campos -->
+      <div class="form-group-column">
+        <div class="form-group">
+          <label for="inputApellido1">Apellido1: </label>
+          <input id="inputApellido1" [(ngModel)]="inputApellido1" type="text" class="wide-input"/>
+        </div> 
+        <div class="form-group">
+          <label for="inputCorreo">Correo: </label>
+          <input id="inputCorreo" [(ngModel)]="inputCorreo" type="email" class="wide-input"/>
+        </div>         
+              
+        <div class="form-group">
+          <label for="inputDistrito">Distrito: </label>
+          <select id="inputDistrito" [(ngModel)]="inputDistritoId" class="wide-input">
+            <option *ngFor="let distrito of DistritosFiltrados" [value]="distrito.DistritoId">{{ distrito.Distrito }}</option>
+          </select>
+        </div>
+
       </div>
-      <div>
-        <label>Apellido1:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'apellido2Input' + Docente.DocenteId)"
-          [value]="Docente.Apellido1"
-          name="Apellido1"
-          id="apellido1Input{{Docente.DocenteId}}"
-        />
-      </div>
-      <div>
-        <label>Apellido2:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'correoInput' + Docente.DocenteId)"
-          [value]="Docente.Apellido2"
-          name="Apellido2"
-          id="apellido2Input{{Docente.DocenteId}}"
-        />
-      </div>
-      <div>
-        <label>Correo:</label>
-        <input type="email"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'direccionInput' + Docente.DocenteId)"
-          [value]="Docente.Correo"
-          name="Correo"
-          id="correoInput{{Docente.DocenteId}}"
-        />
-      </div>
-      <div>
-        <label>Dirección:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'telefonoInput' + Docente.DocenteId)"
-          [value]="Docente.Direccion"
-          name="Direccion"
-          id="direccionInput{{Docente.DocenteId}}"
-        />
-      </div>
-      <div>
-        <label>Teléfono:</label>
-        <input type="text"
-          (keydown.enter)="modificarDocente(Docente.DocenteId, $event); nextField($event, 'nextInput' + Docente.DocenteId)"
-          [value]="Docente.Telefono"
-          name="Telefono"
-          id="telefonoInput{{Docente.DocenteId}}"
-        />
-      </div>
-      <button (click)="borrarDocente(Docente.DocenteId)">Borrar docente {{ Docente.DocenteId }}</button>
-    </li>
-  } @empty {
-    <li>Nada que mostrar.</li>
-  }
-  <li class="docente-item">
-    <input placeholder="Identificación" type="text" #identificacionInput (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'nombreInput')" />
-    <input placeholder="Nombre" type="text" #nombreInput (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'apellido1Input')" />
-    <input placeholder="Apellido1" type="text" #apellido1Input (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'apellido2Input')" />
-    <input placeholder="Apellido2" type="text" #apellido2Input (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'correoInput')" />
-    <input placeholder="Correo" type="email" #correoInput (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'direccionInput')" />
-    <input placeholder="Dirección" type="text" #direccionInput (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'telefonoInput')" />
-    <input placeholder="Teléfono" type="text" #telefonoInput (keydown.enter)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value); nextField($event, 'nextInput')" />
-    <button (click)="agregarDocente(identificacionInput.value, nombreInput.value, apellido1Input.value, apellido2Input.value, correoInput.value, direccionInput.value, telefonoInput.value)">Agregar</button>
-  </li>
-</ul>
+    </div>
+
+    <!-- Botón de acción -->
+    <div class="form-group">
+      <button (click)="inputDocenteId === '' ? agregarDocente() : modificarDocente()" class="btn-add">
+        {{ inputDocenteId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>
+

@@ -1,6 +1,7 @@
 export interface PeriodoAcademico {
-    PeriodoAcademicoId?: number;
+    PeriodoAcademicoId?: string;
     Nombre: string;
     CreadoEn?: string;
     ActualizadoEn?: string;
+    Estado?: boolean;
 }

@@ -1,4 +1,96 @@
-<div class="app-title">
-    <h1>{{ title.toUpperCase() }}</h1>
-    <p>{{ subtitle}}</p>
+<div class="container" style="padding-top: 60px;"> 
+  <div class="card">
+    <h1 class="center">{{ title }}</h1> 
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarUsuarios()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarUsuarios()" class="wide-input">
+          <option value="Identificacion">Identificación</option>
+          <option value="Login">Login</option> 
+          <option value="Email">Email</option>
+        </select>
+      </div>
+      <div class="right-inputs">       
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+        
+      </div>
+    </div>
   </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>         
+          <th>Identificación</th>
+          <th>Login</th>
+          <th>Contraseña</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Usuario of usuariosFiltrados; trackBy: trackByUsuarioId">
+          <td>{{ Usuario.Identificacion }}</td>
+          <td>{{ Usuario.Login }}</td>
+          <td>{{ '•'.repeat(Usuario.Contrasena.length) }}</td>
+          <td>{{ Usuario.Email }}</td>
+          <td>{{ Usuario.Rol }}</td>
+          <td class="action-buttons">
+            <button (click)="editUsuario(Usuario)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="desactivarUsuario(Usuario.UsuarioId, !Usuario.Estado)" [ngClass]="Usuario.Estado ? 'btn-toggle-activate' : 'btn-toggle-deactivate'" [attr.title]="Usuario.Estado ? 'Desactivar' : 'Activar'">
+              <i class="fas" [ngClass]="Usuario.Estado ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </button>
+            
+          </td>
+        </tr>
+        <tr *ngIf="usuariosFiltrados.length === 0">
+          <td colspan="6">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputUsuarioId === '' ? 'Crear Usuario' : 'Editar Usuario' }}</h2>
+    <div class="form-group">
+      <label for="inputIdentificacion">Identificación: </label>
+      <input id="inputIdentificacion" [(ngModel)]="inputIdentificacion" type="text" class="wide-input"/>
+    </div>
+    <div class="form-group">
+      <label for="inputLogin">Login: </label>
+      <input id="inputLogin" [(ngModel)]="inputLogin" type="text" class="wide-input"/>
+    </div>
+    <div class="form-group">
+      <label for="inputContrasena">Contraseña: </label>
+      <input id="inputContrasena" [(ngModel)]="inputContrasena" type="password" class="wide-input"/>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail">Email: </label>
+      <input id="inputEmail" [(ngModel)]="inputEmail" type="email" class="wide-input"/>
+    </div>
+    <div class="form-group">
+      <label for="inputRol">Rol: </label>
+      <select id="inputRol" [(ngModel)]="inputRol" class="wide-input">
+        <option value="Administrador">Administrador</option>
+        <option value="Colaborador">Colaborador</option>
+        <option value="Usuario">Usuario</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button (click)="inputUsuarioId === '' ? agregarUsuario() : modificarUsuario()" class="btn-add">
+        {{ inputUsuarioId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -8,19 +8,24 @@
 /* Establece la tipografía básica de la página */
 body {
   font-family: Arial, sans-serif;
+  margin: 0; /* Elimina el margen superior */
+  padding-top: 60px; /* Ajusta este valor según la altura de tu navbar */
 }
 
 /* Barra de navegación */
 .navbar {
   background-color: #214892;
-  padding: 10px 20px;
+  padding: 0px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+  position: fixed; /* Cambiado de relative a fixed */
   top: 0;
+  left: 0; /* Asegura que el navbar esté pegado al borde izquierdo */
   width: 100%;
   z-index: 1000;
+  margin: 0; /* Elimina cualquier margen */
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
 }
 
 /* Estilo de la marca (nombre de la aplicación) en la barra de navegación */

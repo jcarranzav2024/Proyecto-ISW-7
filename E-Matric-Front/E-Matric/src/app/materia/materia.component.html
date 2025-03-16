@@ -1,4 +1,130 @@
-<div class="app-title">
-    <h1>{{ title.toUpperCase() }}</h1>
-    <p>{{ subtitle}}</p>
+<div class="container" style="padding-top: 60px">
+  <div class="card">
+    <h1 class="center">{{ title }}</h1>
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input
+          id="search"
+          [(ngModel)]="searchTerm"
+          (input)="filtrarMaterias()"
+          type="text"
+          class="wide-input"
+        />
+        <label for="filterField">Filtrar por: </label>
+        <select
+          id="filterField"
+          [(ngModel)]="filterField"
+          (change)="filtrarMaterias()"
+          class="wide-input"
+        >
+          <option value="Codigo">Código</option>
+          <option value="Nombre">Nombre</option>
+          <option value="Credtos">Creditos</option>
+          
+        </select>
+      </div>
+      <div class="right-inputs">
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
   </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Creditos</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let Materia of materiasFiltradas; trackBy: trackByMateriaId"
+        >
+          <td>{{ Materia.Codigo }}</td>
+          <td>{{ Materia.Nombre }}</td>
+          <td>{{ Materia.Creditos }}</td>
+          <td class="action-buttons">
+            <button (click)="editMateria(Materia)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button
+              (click)="desactivarMateria(Materia.MateriaId, !Materia.Estado)"[ngClass]="Materia.Estado ? 'btn-toggle-activate' : 'btn-toggle-deactivate'"[attr.title]="Materia.Estado ? 'Desactivar' : 'Activar'">
+              <i class="fas"[ngClass]="Materia.Estado ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="materiasFiltradas.length === 0">
+          <td colspan="4">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputMateriaId === "" ? "Crear Materia" : "Editar Materia" }}</h2>
+
+    <!-- Contenedor principal del formulario -->
+    <div class="form-group-container">
+      <!-- Primera columna de campos -->
+      <div class="form-group-column">
+        <div class="form-group">
+          <label for="inputCodigo">Código: </label>
+          <input
+            id="inputCodigo"
+            [(ngModel)]="inputCodigo"
+            type="text"
+            class="wide-input"          
+            disabled
+          />
+        </div>
+      </div>
+      
+      <!-- Segunda columna de campos -->
+      <div class="form-group-column">
+        <div class="form-group">
+          <label for="inputNombre">Nombre: </label>
+          <input
+            id="inputNombre"
+            [(ngModel)]="inputNombre"
+            type="text"
+            class="wide-input"
+            (change)="crearCodigo()"
+          />
+        </div>
+      </div>
+
+      <!-- Tercer columna de campos -->
+      <div class="form-group-column">
+        <div class="form-group">
+          <label for="inputCreditos">Creditos: </label>
+          <input
+            id="inputCreditos"
+            [(ngModel)]="inputCreditos"
+            type="text"
+            class="wide-input"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón de acción -->
+    <div class="form-group">
+      <button
+        (click)="inputMateriaId === '' ? agregarMateria() : modificarMateria()"
+        class="btn-add"
+      >
+        {{ inputMateriaId === "" ? "Crear" : "Guardar" }}
+      </button>
+    </div>
+  </div>
+</div>

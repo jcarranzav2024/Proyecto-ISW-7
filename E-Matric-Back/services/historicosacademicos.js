@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-
+const Auditoria = require('./auditorias');
 const prisma = new PrismaClient();
+const auditoria = new Auditoria();
 
 class HistoricoAcademico {
 
@@ -34,7 +35,14 @@ class HistoricoAcademico {
           CreadoEn: new Date()
         }
       });
-      res.json(resultado);
+
+      // Registrar la acción en auditoría
+      await auditoria.Agregar({
+        Accion: `Agregar histórico académico para el estudiante ${EstudianteId}`,
+        UsuarioId: req.user.id // Asumiendo que el ID del usuario está en req.user.id
+      });
+
+      res.json({ message: 'Histórico académico agregado correctamente', resultado });
     } catch (error) {
       console.error(`No se pudo insertar el histórico académico debido al error: ${error}`);
       res.status(500).json({ error: 'Error al agregar histórico académico' });
@@ -61,6 +69,12 @@ class HistoricoAcademico {
         },
       });
 
+      // Registrar la acción en auditoría
+      await auditoria.Agregar({
+        Accion: `Actualizar histórico académico con ID ${HistoricoAcademicoId}`,
+        UsuarioId: req.user.id // Asumiendo que el ID del usuario está en req.user.id
+      });
+
       res.json({ message: `Histórico académico con ID ${HistoricoAcademicoId} actualizado correctamente`, resultado });
     } catch (error) {
       console.error(`No se pudo actualizar el histórico académico ${HistoricoAcademicoId} debido al error: ${error}`);
@@ -68,17 +82,24 @@ class HistoricoAcademico {
     }
   }
 
-  async Borrar(HistoricoAcademicoId) {
+  async Borrar(HistoricoAcademicoId, req, res) {
     try {
       const resultado = await prisma.historicoAcademico.delete({
         where: {
           HistoricoAcademicoId: parseInt(HistoricoAcademicoId),
         },
       });
-      return { message: `Histórico académico con ID ${HistoricoAcademicoId} borrado correctamente` };
+
+      // Registrar la acción en auditoría
+      await auditoria.Agregar({
+        Accion: `Borrar histórico académico con ID ${HistoricoAcademicoId}`,
+        UsuarioId: req.user.id // Asumiendo que el ID del usuario está en req.user.id
+      });
+
+      res.json({ message: `Histórico académico con ID ${HistoricoAcademicoId} borrado correctamente` });
     } catch (error) {
       console.error(`No se pudo borrar el histórico académico ${HistoricoAcademicoId} debido al error: ${error}`);
-      throw error;
+      res.status(500).json({ error: error.message || 'Error al borrar histórico académico' });
     }
   }
 }

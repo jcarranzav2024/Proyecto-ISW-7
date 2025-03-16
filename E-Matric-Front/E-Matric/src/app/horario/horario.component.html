@@ -1,59 +1,143 @@
-<div class="app-title">
-  <h1>{{ title.toUpperCase() }}</h1>
-  <p>{{ subtitle }}</p>
+<div class="container" style="padding-top: 60px">
+  <div class="card">
+    <h1 class="center">{{ title }}</h1>
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input
+          id="search"
+          [(ngModel)]="searchTerm"
+          (input)="filtrarHorarios()"
+          type="text"
+          class="wide-input"
+        />
+        <label for="filterField">Filtrar por: </label>
+        <select
+          id="filterField"
+          [(ngModel)]="filterField"
+          (change)="filtrarHorarios()"
+          class="wide-input"
+        >
+          <option value="Nombre">Nombre</option>
+          <option value="Dia">Día</option>
+          <option value="HoraInicio">Hora Inicio</option>
+          <option value="HoraFin">Hora Fin</option>
+        </select>
+      </div>
+      <div class="right-inputs">
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Día</th>
+          <th>Hora Inicio</th>
+          <th>Hora Fin</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let Horario of horariosFiltrados; trackBy: trackByHorarioId"
+        >
+          <td>{{ Horario.Nombre }}</td>
+          <td>{{ Horario.Dia }}</td>
+          <td>{{ Horario.HoraInicio }}</td>
+          <td>{{ Horario.HoraFin }}</td>
+          <td class="action-buttons">
+            <button (click)="editHorario(Horario)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button
+              (click)="borrarHorario(Horario.HorarioId)"
+              class="btn-delete"
+            >
+              <i class="fas fa-trash"></i> Borrar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="horariosFiltrados.length === 0">
+          <td colspan="4">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<ul class="horarios-list">
-  @for (Horario of Horarios(); track Horario.HorarioId) {
-    <li class="horario-item">
-      <div>
-        <label>ID:</label>
-        {{ Horario.HorarioId }}
-      </div>
-      <div>
-        <label>Día:</label>
-        <input type="text"
-          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'horaInicioInput' + Horario.HorarioId)"
-          [value]="Horario.Dia"
-          name="Dia"
-          id="diaInput{{Horario.HorarioId}}"
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputHorarioId === "" ? "Crear Horario" : "Editar Horario" }}</h2>
+
+    <!-- Contenedor principal del formulario -->
+    <div class="form-group-container">
+      <!-- Primera columna de campos -->
+      <div class="form-group-column">
+      <div class="form-group">
+        <label for="inputNombre">Nombre: </label>
+        <input
+        id="inputNombre"
+        [(ngModel)]="inputNombre"
+        type="text"
+        class="wide-input"
+        [value]="inputDia + ' - ' + inputHoraInicio + ' a ' + inputHoraFin"
+        disabled
         />
       </div>
-      <div>
-        <label>Hora Inicio:</label>
-        <input type="time"
-          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'horaFinInput' + Horario.HorarioId)"
-          [value]="Horario.HoraInicio"
-          name="HoraInicio"
-          id="horaInicioInput{{Horario.HorarioId}}"
+      <div class="form-group">
+        <label for="inputHoraInicio">Hora Inicio: </label>
+        <input
+        id="inputHoraInicio"
+        [(ngModel)]="inputHoraInicio"
+        type="time"
+        class="wide-input"
+        (change)="updateNombre()"
         />
       </div>
-      <div>
-        <label>Hora Fin:</label>
-        <input type="time"
-          (keydown.enter)="modificarHorario(Horario.HorarioId, $event); nextField($event, 'nextInput' + Horario.HorarioId)"
-          [value]="Horario.HoraFin"
-          name="HoraFin"
-          id="horaFinInput{{Horario.HorarioId}}"
+      </div>
+      <!-- Segunda columna de campos -->
+      <div class="form-group-column">
+      <div class="form-group">
+        <label for="inputDia">Día: </label>
+        <select id="inputDia" [(ngModel)]="inputDia" class="wide-input" (change)="updateNombre()">
+        <option value="Lunes">Lunes</option>
+        <option value="Martes">Martes</option>
+        <option value="Miercoles">Miércoles</option>
+        <option value="Jueves">Jueves</option>
+        <option value="Viernes">Viernes</option>
+        <option value="Sabado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="inputHoraFin">Hora Fin: </label>
+        <input
+        id="inputHoraFin"
+        [(ngModel)]="inputHoraFin"
+        type="time"
+        class="wide-input"
+        (change)="updateNombre()"
         />
       </div>
-      <button (click)="borrarHorario(Horario.HorarioId)">Borrar horario {{ Horario.HorarioId }}</button>
-    </li>
-  } @empty {
-    <li>Nada que mostrar.</li>
-  }
-  <li class="horario-item">
-    <select #diaInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'horaInicioInput')">
-      <option value="Lunes">Lunes</option>
-      <option value="Martes">Martes</option>
-      <option value="Miércoles">Miércoles</option>
-      <option value="Jueves">Jueves</option>
-      <option value="Viernes">Viernes</option>
-      <option value="Sábado">Sábado</option>
-      <option value="Domingo">Domingo</option>
-    </select>
-    <input placeholder="Hora Inicio" type="time" #horaInicioInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'horaFinInput')" />
-    <input placeholder="Hora Fin" type="time" #horaFinInput (keydown.enter)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value); nextField($event, 'nextInput')" />
-    <button (click)="agregarHorario(diaInput.value, horaInicioInput.value, horaFinInput.value)">Agregar</button>
-  </li>
-</ul>
+      </div>
+    </div>
+
+    <!-- Botón de acción -->
+    <div class="form-group">
+      <button
+        (click)="inputHorarioId === '' ? agregarHorario() : modificarHorario()"
+        class="btn-add"
+      >
+        {{ inputHorarioId === "" ? "Crear" : "Guardar" }}
+      </button>
+    </div>
+  </div>
+</div>

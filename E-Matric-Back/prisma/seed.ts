@@ -714,8 +714,8 @@ async function main() {
   // Crear usuarios
   await prisma.usuario.createMany({
     data: [
-      { Identificacion: '530248379', Login: 'Admin', Contrasena: 'Admin', Email: 'Anita_Monge@gmail.com', Rol: 'Administrador' },
-      { Identificacion: '626485133', Login: 'Admin', Contrasena: 'Admin', Email: 'Uriel_Arguello@gmail.com', Rol: 'Administrador' },
+      { Identificacion: '530248379', Login: 'amonge', Contrasena: 'Administrator', Email: 'Anita_Monge@gmail.com', Rol: 'Administrador' },
+      { Identificacion: '626485133', Login: 'uarguello', Contrasena: 'Administrator', Email: 'Uriel_Arguello@gmail.com', Rol: 'Administrador' },
     ],
   });
 
@@ -1059,43 +1059,21 @@ async function main() {
       await prisma.$disconnect();
     }
 
-
-    //*********************************************************** OFERTA ACADEMICA ********************************************************************/
-
-    const periodosLista = await prisma.periodoAcademico.findMany({
-      select: { PeriodoAcademicoId: true }
-    });
-
-    if (periodosLista.length === 0) {
-      console.error("❌ No hay períodos académicos creados. Primero ejecuta el script de períodos.");
-      return;
-    }
-
-    for (const periodo of periodosLista) {
-      await prisma.ofertaAcademica.create({
-        data: {
-          PeriodoAcademicoId: periodo.PeriodoAcademicoId,
-        },
-      });
-    }
-
-    console.log("✔️ Ofertas académicas creadas correctamente.");
-
-
     //***********************************************************HORARIOS ********************************************************************/
 
-    const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
     const turnos = [
-      { inicio: "08:00:00", fin: "12:00:00" },
-      { inicio: "13:00:00", fin: "17:00:00" },
-      { inicio: "18:00:00", fin: "22:00:00" }
+      { inicio: "08:00", fin: "12:00" },
+      { inicio: "13:00", fin: "17:00" },
+      { inicio: "18:00", fin: "22:00" }
     ];
 
     const horarios = dias.flatMap((dia) =>
       turnos.map((turno) => ({
+      Nombre: `${dia} - ${turno.inicio} a ${turno.fin}`,
       Dia: dia,
-      HoraInicio: `1970-01-01T${turno.inicio}Z`,
-      HoraFin: `1970-01-01T${turno.fin}Z`,
+      HoraInicio: new Date(`1970-01-01T${turno.inicio}:00`),
+      HoraFin: new Date(`1970-01-01T${turno.fin}:00`),
       }))
     );
 
@@ -1109,16 +1087,15 @@ async function main() {
     console.log(horarios);
 
 
-
     //*********************************************************** CURSOS ********************************************************************/
 
     // Obtener los datos existentes
     const docentesLista = await prisma.docente.findMany(); // Obtener todos los docentes
     const horariosLista = await prisma.horario.findMany(); // Obtener todos los horarios
-    const ofertasAcademicas = await prisma.ofertaAcademica.findMany(); // Obtener todas las ofertas académicas
+    
     const materias = await prisma.materia.findMany(); // Obtener todas las materias
 
-    if (docentesLista.length === 0 || horariosLista.length === 0 || ofertasAcademicas.length === 0 || materias.length === 0) {
+    if (docentesLista.length === 0 || horariosLista.length === 0 || materias.length === 0) {
       console.error("❌ Faltan datos para crear cursos (Docentes, Horarios, Ofertas académicas, Materias).");
       return;
     }
@@ -1129,7 +1106,6 @@ async function main() {
     // Creamos 100 cursos
     for (let i = 0; i < 150; i++) {
       const docenteAleatorio = docentesLista[Math.floor(Math.random() * docentesLista.length)];
-      const ofertaAcademicaAleatoria = ofertasAcademicas[Math.floor(Math.random() * ofertasAcademicas.length)];
       const materiaAleatoria = materias[Math.floor(Math.random() * materias.length)];
 
       // Generar aula aleatoria entre A1-A20
@@ -1152,7 +1128,7 @@ async function main() {
         cursosData.push({
           MateriaId: materiaAleatoria.MateriaId,
           DocenteId: docenteAleatorio.DocenteId,
-          OfertaAcademicaId: ofertaAcademicaAleatoria.OfertaAcademicaId,
+          OfertaAcademicaId: null,
           Cupo: Math.floor(Math.random() * 5) + 20, // Entre 20 y 25 cupos
           Aula: aulaAleatoria,
           HorarioId: horarioAleatorio.HorarioId, // Asignamos el ID del horario
@@ -1174,6 +1150,70 @@ async function main() {
     } else {
       console.log("❌ No se crearon cursos debido a conflictos con horarios y aulas.");
     }
+
+    //*********************************************************** OFERTA ACADEMICA ********************************************************************/
+
+    const periodosLista = await prisma.periodoAcademico.findMany({
+      select: { PeriodoAcademicoId: true }
+    });
+    
+    if (periodosLista.length === 0) {
+      console.error("❌ No hay períodos académicos creados. Primero ejecuta el script de períodos.");
+      return;
+    }
+    
+    const cursosTotales = await prisma.curso.findMany({
+      select: { CursoId: true, OfertaAcademicaId: true }
+    });
+    
+    if (cursosTotales.length === 0) {
+      console.error("❌ No hay cursos creados. Primero ejecuta el script de cursos.");
+      return;
+    }
+    
+    for (const periodo of periodosLista) {
+      // Crear la oferta
+      const oferta = await prisma.ofertaAcademica.create({
+        data: {
+          PeriodoAcademicoId: periodo.PeriodoAcademicoId,
+        },
+      });
+    
+      // Buscar cursos no asignados aún
+      const cursosDisponibles = cursosTotales.filter(c => !c.OfertaAcademicaId);
+      const cursosAleatorios = cursosDisponibles.sort(() => 0.5 - Math.random()).slice(0, 6);
+    
+      if (cursosAleatorios.length < 6) {
+        console.warn(`⚠️ Solo hay ${cursosAleatorios.length} cursos disponibles para asignar a la oferta del periodo ${periodo.PeriodoAcademicoId}`);
+      }
+    
+      for (const curso of cursosAleatorios) {
+        await prisma.curso.update({
+          where: { CursoId: curso.CursoId },
+          data: { OfertaAcademicaId: oferta.OfertaAcademicaId },
+        });
+    
+        // Actualiza la lista local para no reasignar el curso
+        curso.OfertaAcademicaId = oferta.OfertaAcademicaId;
+      }
+    }
+    
+    // Verificación final
+    const ofertas = await prisma.ofertaAcademica.findMany({
+      include: {
+        Cursos: true,
+        PeriodoAcademico: true,
+      },
+    });
+    
+    for (const oferta of ofertas) {
+      if (oferta.Cursos.length < 6) {
+        console.warn(`⚠️ La oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} solo tiene ${oferta.Cursos.length} cursos.`);
+      } else {
+        console.log(`✔️ Oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} tiene ${oferta.Cursos.length} cursos asignados.`);
+      }
+    }
+    
 
     //*********************************************************** MATRICULAS ********************************************************************/
 

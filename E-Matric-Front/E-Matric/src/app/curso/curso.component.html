@@ -28,15 +28,7 @@
           id="docenteIdInput{{Curso.CursoId}}"
         />
       </div>
-      <div>
-        <label>Oferta Académica ID:</label>
-        <input type="number"
-          (keydown.enter)="modificarCurso(Curso.CursoId, $event); nextField($event, 'cupoInput' + Curso.CursoId)"
-          [value]="Curso.OfertaAcademicaId"
-          name="OfertaAcademicaId"
-          id="ofertaAcademicaIdInput{{Curso.CursoId}}"
-        />
-      </div>
+     
       <div>
         <label>Cupo:</label>
         <input type="number"
@@ -70,12 +62,12 @@
     <li>Nada que mostrar.</li>
   }
   <li class="curso-item">
-    <input placeholder="Materia ID" type="number" #materiaIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'docenteIdInput')" />
-    <input placeholder="Docente ID" type="number" #docenteIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'ofertaAcademicaIdInput')" />
-    <input placeholder="Oferta Académica ID" type="number" #ofertaAcademicaIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'cupoInput')" />
-    <input placeholder="Cupo" type="number" #cupoInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'aulaInput')" />
-    <input placeholder="Aula" type="text" #aulaInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'horarioIdInput')" />
-    <input placeholder="Horario ID" type="number" #horarioIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'nextInput')" />
-    <button (click)="agregarCurso(materiaIdInput.value, docenteIdInput.value, ofertaAcademicaIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value)">Agregar</button>
+    <input placeholder="Materia ID" type="number" #materiaIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'docenteIdInput')" />
+    <input placeholder="Docente ID" type="number" #docenteIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'ofertaAcademicaIdInput')" />
+    <input placeholder="Oferta Académica ID" type="number" #ofertaAcademicaIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'cupoInput')" />
+    <input placeholder="Cupo" type="number" #cupoInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'aulaInput')" />
+    <input placeholder="Aula" type="text" #aulaInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'horarioIdInput')" />
+    <input placeholder="Horario ID" type="number" #horarioIdInput (keydown.enter)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value); nextField($event, 'nextInput')" />
+    <button (click)="agregarCurso(materiaIdInput.value, docenteIdInput.value, cupoInput.value, aulaInput.value, horarioIdInput.value)">Agregar</button>
   </li>
 </ul>

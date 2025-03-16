@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:HorarioId', async (req, res) => {
   try {
-    const resultado = await horarios.Borrar(req.params.HorarioId);
+    const resultado = await horarios.Borrar(req.params.HorarioId,req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar horario' });

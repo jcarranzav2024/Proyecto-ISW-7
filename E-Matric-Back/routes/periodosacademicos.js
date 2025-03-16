@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:PeriodoAcademicoId', async (req, res) => {
   try {
-    const resultado = await periodosacademicos.Borrar(req.params.PeriodoAcademicoId);
+    const resultado = await periodosacademicos.Borrar(req.params.PeriodoAcademicoId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar periodo académico' });

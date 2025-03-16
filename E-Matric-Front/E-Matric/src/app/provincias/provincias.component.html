@@ -1,23 +1,66 @@
-<h1>{{ title }}</h1>   
+<div class="container" style="padding-top: 60px;"> 
+  <div class="card">
+    <h1 class="center">{{ title }}</h1> 
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarProvincias()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarProvincias()" class="wide-input">
+          <option value="Provincia">Provincia</option>
+        </select>
+      </div>
+      <div class="right-inputs">       
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
+  </div>
 
-<ul class="provincias-list">
-    @for (Provincia of Provincias(); track Provincia.ProvinciaId) {
-      <li>
-        {{ Provincia.ProvinciaId }}
-        <input type="text"
-          (keydown.enter)="modificarProvinvia(Provincia.ProvinciaId, $event)"
-          [value]="Provincia.Provincia"
-        />
-        <button (click)="borrarProvinvia(Provincia.ProvinciaId)">Borra provincia {{ Provincia.ProvinciaId }}</button>
-      </li>
-    } @empty {
-      <li>Nada que mostrar.</li>
-    }
-    <li><input placeholder="Agregar" type="text" (keydown.enter)="agregarProvinvia($event)" /></li>
-  </ul>
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Provincia</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Provincia of provinciasFiltradas; trackBy: trackByProvinciaId">
+          <td>{{ Provincia.ProvinciaId }}</td>
+          <td>{{ Provincia.Provincia }} </td>
+          <td class="action-buttons">
+            <button (click)="editProvincia(Provincia)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="borrarProvincia(Provincia.ProvinciaId)" class="btn-delete">
+              <i class="fas fa-trash-alt"></i> Borrar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="provinciasFiltradas.length === 0">
+          <td colspan="3">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<!-- <pre>
-  <code>
-    {{ Provincias() | json }}
-  </code>
-</pre> -->
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputProvinciaId === '' ? 'Crear Provincia' : 'Editar Provincia' }}</h2>
+    <div class="form-group">
+      <label for="inputProvincia">Provincia: </label>
+      <input id="inputProvincia" [(ngModel)]="inputProvincia" type="text" class="wide-input"/>
+    </div>
+    <div class="form-group">
+      <button (click)="inputProvinciaId === '' ? agregarProvincia() : modificarProvincia()" class="btn-add">
+        {{ inputProvinciaId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

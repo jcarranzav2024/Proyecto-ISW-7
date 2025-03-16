@@ -1,4 +1,121 @@
-<div class="app-title">
-    <h1>{{ title.toUpperCase() }}</h1>
-    <p>{{ subtitle}}</p>
+<div class="container" style="padding-top: 60px;">
+  <div class="card">
+    <h1 class="center">{{ title.toUpperCase() }}</h1>
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarOfertas()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarOfertas()" class="wide-input">
+          <option value="PeriodoAcademicoId">Periodo Académico</option>
+          <option value="Estado">Estado</option>
+        </select>
+      </div>
+      <div class="right-inputs">
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
   </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Periodo Académico</th> 
+          <th class="action-col">Acciones</th>         
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let oferta of ofertasFiltradas; trackBy: trackByOfertaId">
+          <td>{{ getNombrePeriodoAcademico(oferta.PeriodoAcademicoId) }}</td>   
+          <td class="action-buttons">
+            <button (click)="editOferta(oferta)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="mostrarDetalles(oferta)" class="btn-details">
+              <i class="fas fa-info-circle"></i> Detalles
+            </button>
+            <button (click)="desactivarOferta(oferta.OfertaAcademicaId, !oferta.Estado)" [ngClass]="oferta.Estado ? 'btn-toggle-activate' : 'btn-toggle-deactivate'" [attr.title]="oferta.Estado ? 'Desactivar' : 'Activar'">
+              <i class="fas" [ngClass]="oferta.Estado ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </button>           
+          </td>
+         
+        </tr>
+        <tr *ngIf="ofertasFiltradas.length === 0">
+          <td colspan="5">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputOfertaId === '' ? 'Crear Oferta Académica' : 'Editar Oferta Académica' }}</h2>
+    
+    <div class="form-group">
+      <label for="inputPeriodoAcademicoId">Periodo Académico: </label>
+      <select id="inputPeriodoAcademicoId" [(ngModel)]="inputPeriodoAcademicoId" class="wide-input">
+        <option *ngFor="let periodo of periodosAcademicos" [value]="periodo.PeriodoAcademicoId">{{ periodo.Nombre }}</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="inputCursos">Cursos: </label>
+      <div class="course-selection">
+        <div class="available-courses">
+          <h3>Cursos Disponibles</h3>
+          <ul>
+            <li *ngFor="let curso of cursosDisponibles" (dblclick)="agregarCurso(curso)">
+              {{ getNombreMateria(curso.MateriaId) }}
+              <button (click)="agregarCurso(curso)" class="btn-small">
+                <i class="fas fa-plus"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="assigned-courses">
+          <h3>Cursos Asignados</h3>
+          <ul>
+            <li *ngFor="let curso of cursosAsignados" (dblclick)="removerCurso(curso)">
+              {{ getNombreMateria(curso.MateriaId) }}
+              <button (click)="removerCurso(curso)" class="btn-small">
+                <i class="fas fa-minus"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <button (click)="inputOfertaId === '' ? agregarOferta() : modificarOferta()" class="btn-add">
+        {{ inputOfertaId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para detalles -->
+<div class="modal" [class.show]="isDetallesModalOpen">
+  <div class="modal-content-Details">
+    <span class="close" (click)="closeDetallesModal()">&times;</span>
+    <h2>Detalles de la Oferta Académica</h2>
+    <div *ngIf="ofertaSeleccionada">
+      <p><strong>Periodo Académico:</strong> {{ getNombrePeriodoAcademico(ofertaSeleccionada.PeriodoAcademicoId) }}</p>
+      <p><strong>Estado:</strong> {{ ofertaSeleccionada.Estado ? 'Activo' : 'Inactivo' }}</p>
+      <h3>Cursos</h3>
+      <ul>
+        <li *ngFor="let curso of ofertaSeleccionada.Cursos">
+          <span>{{ getNombreMateria(curso.MateriaId)}}</span>
+          <span>Aula: {{ curso.Aula }}</span>
+          <span>Cupo: {{ curso.Cupo }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

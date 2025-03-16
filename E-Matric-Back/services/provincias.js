@@ -1,88 +1,31 @@
 const { PrismaClient } = require("@prisma/client");
-
+const Auditoria = require('./auditorias');
 const prisma = new PrismaClient();
+const auditoria = new Auditoria();
 
 class Provincias {
 
   constructor() {}
 
-  async Agregar(req, res) {
-    const { Provincia } = req.body;
-    let resultado;
-    try {
-      resultado = await prisma.provincias.create({
-        data: {
-          Provincia: Provincia,
-          FechaDeCreacion: new Date()
-        }
-      });
-      res.json(resultado);
-    } catch (error) {
-      console.error(`No se pudo insertar la provincia ${Provincia} debido al error: ${error}`);
-      res.status(500).json({ error: 'Error al agregar provincia' });
-    }
-  }
+  validarFormulario(data) {
+    const errores = [];
 
-  async Actualizar(ProvinciaId, Provincia) {
-    let resultado;
-    try {
-      resultado = await prisma.provincias.update({
-        where: { ProvinciaId: parseInt(ProvinciaId) },
-        data: { Provincia: Provincia },
-      });
-    } catch (error) {
-      console.error(`No se pudo actualizar la provincia ${ProvinciaId} debido al error: ${error}`);
-    }
-    return resultado;
-  }
-
-  async Borrar(ProvinciaId) {
-    let resultado;
-    try {
-      // Buscar todos los cantones de la provincia
-      const cantones = await prisma.cantones.findMany({
-        where: {
-          ProvinciaId: parseInt(ProvinciaId),
-        },
-      });
-
-      // Borrar todos los distritos de cada canton
-      for (const canton of cantones) {
-        await prisma.distritos.deleteMany({
-          where: {
-            CantonId: canton.CantonId,
-          },
-        });
+    // Validación de nombre de la provincia
+    if (data.Provincia !== undefined) {
+      if (!data.Provincia.trim()) {
+        errores.push('El nombre de la provincia es obligatorio.');
       }
-
-      // Borrar todos los cantones de la provincia
-      await prisma.cantones.deleteMany({
-        where: {
-          ProvinciaId: parseInt(ProvinciaId),
-        },
-      });
-
-      // Borrar la provincia
-      resultado = await prisma.provincias.delete({
-        where: {
-          ProvinciaId: parseInt(ProvinciaId),
-        },
-      });
-
-      return { message: `Provincia con ID ${ProvinciaId} y sus cantones y distritos asociados borrados correctamente` };
-    } catch (error) {
-      console.error(`No se pudo borrar la provincia ${ProvinciaId} debido al error: ${error}`);
-      throw error;
     }
+
+    return errores;
   }
 
   async Listar(ProvinciaId) {
-    let provincias;
     try {
       if (ProvinciaId === undefined) {
-        provincias = await prisma.provincias.findMany();
+        return await prisma.provincias.findMany();
       } else {
-        provincias = await prisma.provincias.findMany({
+        return await prisma.provincias.findMany({
           where: {
             ProvinciaId: parseInt(ProvinciaId),
           },
@@ -92,7 +35,107 @@ class Provincias {
       console.error('Error al listar provincias:', error);
       throw error;
     }
-    return provincias;
+  }
+
+  async Agregar(req, res) {
+    const { Provincia, UsuarioId } = req.body;
+    const errores = this.validarFormulario(req.body);
+
+    if (errores.length > 0) {
+      return res.status(400).json({ errores });
+    }
+
+    try {
+      const resultado = await prisma.provincias.create({
+        data: {
+          Provincia: Provincia,
+          FechaDeCreacion: new Date()
+        }
+      });
+
+      await auditoria.Agregar({
+        Accion: `Agregar provincia ${Provincia}`,
+        UsuarioId: UsuarioId || (req.user && req.user.id) || 1
+      });
+
+      res.json({ message: 'Provincia agregada correctamente', resultado });
+    } catch (error) {
+      console.error(`No se pudo insertar la provincia ${Provincia} debido al error: ${error}`);
+      res.status(500).json({ error: 'Error al agregar provincia' });
+    }
+  }
+
+  async Actualizar(ProvinciaId, req, res) {
+    const { Provincia, UsuarioId } = req.body;
+    const errores = this.validarFormulario(req.body);
+
+    if (errores.length > 0) {
+      return res.status(400).json({ errores });
+    }
+
+    try {
+      const resultado = await prisma.provincias.update({
+        where: { ProvinciaId: parseInt(ProvinciaId) },
+        data: { Provincia: Provincia },
+      });
+
+      await auditoria.Agregar({
+        Accion: `Actualizar provincia con ID ${ProvinciaId}`,
+        UsuarioId: UsuarioId || (req.user && req.user.id) || 1
+      });
+
+      res.json({ message: `Provincia con ID ${ProvinciaId} actualizada correctamente`, resultado });
+    } catch (error) {
+      console.error(`No se pudo actualizar la provincia ${ProvinciaId} debido al error: ${error}`);
+      res.status(500).json({ error: error.message || 'Error al actualizar provincia' });
+    }
+  }
+
+  async Borrar(ProvinciaId, req, res) {
+    const id = parseInt(ProvinciaId);
+    const { UsuarioId } = req.body;
+
+    try {
+      const resultado = await prisma.$transaction(async (prisma) => {
+        const cantones = await prisma.cantones.findMany({
+          where: {
+            ProvinciaId: id,
+          },
+        });
+
+        for (const canton of cantones) {
+          await prisma.distritos.deleteMany({
+            where: {
+              CantonId: canton.CantonId,
+            },
+          });
+        }
+
+        await prisma.cantones.deleteMany({
+          where: {
+            ProvinciaId: id,
+          },
+        });
+
+        await prisma.provincias.delete({
+          where: {
+            ProvinciaId: id,
+          },
+        });
+
+        await auditoria.Agregar({
+          Accion: `Borrar provincia con ID ${ProvinciaId}`,
+          UsuarioId: UsuarioId || (req.user && req.user.id) || 1
+        });
+
+        return { message: `Provincia con ID ${ProvinciaId} y sus cantones y distritos asociados borrados correctamente` };
+      });
+
+      res.json(resultado);
+    } catch (error) {
+      console.error(`No se pudo borrar la provincia ${ProvinciaId} debido al error: ${error}`);
+      res.status(500).json({ error: error.message || 'Error al borrar provincia' });
+    }
   }
 }
 

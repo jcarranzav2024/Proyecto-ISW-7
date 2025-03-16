@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:UsuarioId', async (req, res) => {
   try {
-    const resultado = await usuarios.Borrar(req.params.UsuarioId);
+    const resultado = await usuarios.Borrar(req.params.UsuarioId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar usuario' });

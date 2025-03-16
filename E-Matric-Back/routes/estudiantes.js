@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:EstudianteId', async (req, res) => {
   try {
-    const resultado = await estudiantes.Borrar(req.params.EstudianteId);
+    const resultado = await estudiantes.Borrar(req.params.EstudianteId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar estudiante' });
@@ -49,5 +49,6 @@ router.put('/:EstudianteId', async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar estudiante' });
   }
 });
+
 
 module.exports = router;

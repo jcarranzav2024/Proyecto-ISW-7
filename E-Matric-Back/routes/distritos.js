@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:DistritoId', async (req, res) => {
   try {
-    const resultado = await distritos.Borrar(req.params.DistritoId);
+    const resultado = await distritos.Borrar(req.params.DistritoId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar distrito' });

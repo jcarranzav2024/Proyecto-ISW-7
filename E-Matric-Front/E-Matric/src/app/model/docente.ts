@@ -9,4 +9,5 @@ export interface Docente {
   Telefono: string;
   CreadoEn?: string;
   ActualizadoEn?: string;
+  Estado?: boolean;
 }

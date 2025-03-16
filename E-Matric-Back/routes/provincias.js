@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:ProvinciaId', async (req, res) => {
   try {
-    const resultado = await provincias.Borrar(req.params.ProvinciaId);
+    const resultado = await provincias.Borrar(req.params.ProvinciaId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar provincia' });
@@ -43,8 +43,7 @@ router.delete('/:ProvinciaId', async (req, res) => {
 router.put('/:ProvinciaId', async (req, res) => {
   try {
     const { ProvinciaId } = req.params;
-    const { Provincia } = req.body;
-    const resultado = await provincias.Actualizar(ProvinciaId, Provincia);
+    const resultado = await provincias.Actualizar(ProvinciaId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar provincia' });

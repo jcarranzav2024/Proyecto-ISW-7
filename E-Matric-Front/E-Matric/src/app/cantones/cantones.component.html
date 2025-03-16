@@ -1,20 +1,75 @@
-<div class="app-title">
-  <h1>{{ title.toUpperCase() }}</h1>
-  <p>{{ subtitle }}</p>
+<div class="container" style="padding-top: 60px;">
+  <div class="card">
+    <h1 class="center">{{ title }}</h1>
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarCantones()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarCantones()" class="wide-input">
+          <option value="Provincia">Provincia</option>
+          <option value="Canton">Cantón</option>
+        </select>
+      </div>
+      <div class="right-inputs">
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Provincia</th>
+          <th>Cantón</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Canton of cantonesFiltrados; trackBy: trackByCantonId">
+          <td>{{ getNombreProvincia(Canton.ProvinciaId) }}</td>
+          <td>{{ Canton.Canton }}</td>
+          <td class="action-buttons">
+            <button (click)="editCanton(Canton)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="borrarCanton(Canton.CantonId)" class="btn-delete">
+              <i class="fas fa-trash-alt"></i> Borrar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="cantonesFiltrados.length === 0">
+          <td colspan="3">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<ul class="cantones-list">
-  @for (Canton of Cantones(); track Canton.CantonId) {
-    <li>
-    {{ Canton.CantonId }}
-    <input type="text"
-      (keydown.enter)="modificarCanton(Canton.CantonId, $event)"
-      [value]="Canton.Canton"
-    />
-    <button (click)="borrarCanton(Canton.CantonId)">Borra canton {{ Canton.CantonId }}</button>
-    </li>
-  } @empty {
-    <li>Nada que mostrar.</li>
-  }
-  <li><input placeholder="Agregar" type="text" (keydown.enter)="agregarCanton($event)" /></li>
-  </ul>
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputCantonId === '' ? 'Crear Cantón' : 'Editar Cantón' }}</h2>
+    <div class="form-group">
+      <label for="inputCanton">Cantón: </label>
+      <input id="inputCanton" [(ngModel)]="inputCanton" type="text" class="wide-input"/>
+      <div *ngIf="errorCanton" class="error-message">{{ errorCanton }}</div>
+    </div>
+    <div class="form-group">
+      <label for="selectProvincia">Provincia: </label>
+      <select id="selectProvincia" [(ngModel)]="inputProvinciaId" class="wide-input">
+        <option *ngFor="let provincia of Provincias()" [value]="provincia.ProvinciaId">{{ provincia.Provincia }}</option>
+      </select>
+      <div *ngIf="errorProvincia" class="error-message">{{ errorProvincia }}</div>
+    </div>
+    <div class="form-group">
+      <button (click)="inputCantonId === '' ? agregarCanton() : modificarCanton()" class="btn-add">
+        {{ inputCantonId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

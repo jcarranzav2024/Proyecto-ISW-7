@@ -1,8 +1,9 @@
 export interface Materia {
-    MateriaId?: number;
+    MateriaId?: string;
     Nombre: string;
     Codigo: string;
     Creditos: number;
     CreadoEn?: string;
     ActualizadoEn?: string;
+    Estado?: boolean
 }

@@ -1,29 +1,84 @@
-<div class="app-title">
-  <h1>{{ title.toUpperCase() }}</h1>
-  <p>{{ subtitle }}</p>
+<div class="container" style="padding-top: 60px;">
+  <div class="card">
+    <h1 class="center">{{ title }}</h1>
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarDistritos()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarDistritos()" class="wide-input">
+          <option value="Distrito">Distrito</option>
+          <option value="Canton">Cantón</option>
+          <option value="Valoracion">Valoración</option>
+        </select>
+      </div>
+      <div class="right-inputs">
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>
+          <th>Cantón</th>
+          <th>Distrito</th>
+          <th>Valoración</th>
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Distrito of distritosFiltrados; trackBy: trackByDistritoId">
+            <td>{{ getNombreCanton(Distrito.CantonId) }}</td>
+          <td>{{ Distrito.Distrito }}</td>
+          <td>{{ Distrito.Valoracion }}</td>
+          <td class="action-buttons">
+            <button (click)="editDistrito(Distrito)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button (click)="borrarDistrito(Distrito.DistritoId)" class="btn-delete">
+              <i class="fas fa-trash-alt"></i> Borrar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="distritosFiltrados.length === 0">
+          <td colspan="4">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<ul class="distritos-list">
-  @for (Distrito of Distritos(); track Distrito.DistritoId) {
-    <li>
-      {{ Distrito.DistritoId }}
-      <input type="text"
-        (keydown.enter)="modificarDistrito(Distrito.DistritoId, $event)"
-        [value]="Distrito.Distrito"
-      />
-      <button (click)="borrarDistrito(Distrito.DistritoId)">Borra distrito {{ Distrito.DistritoId }}</button>
-    </li>
-  } @empty {
-    <li>Nada que mostrar.</li>
-  }
-  <li>
-    <input placeholder="Distrito" type="text" #distritoInput (keydown.enter)="agregarDistrito(distritoInput.value, cantonIdInput.value, valoracionInput.value)" />
-    <input placeholder="CantonId" type="number" #cantonIdInput (keydown.enter)="agregarDistrito(distritoInput.value, cantonIdInput.value, valoracionInput.value)" />
-    <select #valoracionInput (keydown.enter)="agregarDistrito(distritoInput.value, cantonIdInput.value, valoracionInput.value)">
-      <option value="Excelente">Excelente</option>
-      <option value="Bueno">Bueno</option>
-      <option value="Regular">Regular</option>
-    </select>
-    <button (click)="agregarDistrito(distritoInput.value, cantonIdInput.value, valoracionInput.value)">Agregar</button>
-  </li>
-</ul>
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputDistritoId === '' ? 'Crear Distrito' : 'Editar Distrito' }}</h2>
+    <div class="form-group">
+      <label for="inputDistrito">Distrito: </label>
+      <input id="inputDistrito" [(ngModel)]="inputDistrito" type="text" class="wide-input"/>
+    </div>    
+    <div class="form-group">
+      <label for="selectCanton">Canton: </label>
+      <select id="selectCanton" [(ngModel)]="inputCantonId" class="wide-input">
+        <option *ngFor="let canton of Cantones()" [value]="canton.CantonId">{{ canton.Canton }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="inputValoracion">Valoración: </label>
+      <select id="inputValoracion" [(ngModel)]="inputValoracion" class="wide-input">
+        <option value="Excelente">Excelente</option>
+        <option value="Bueno">Bueno</option>
+        <option value="Regular">Regular</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button (click)="inputDistritoId === '' ? agregarDistrito() : modificarDistrito()" class="btn-add">
+        {{ inputDistritoId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

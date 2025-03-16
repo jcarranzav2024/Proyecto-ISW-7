@@ -24,19 +24,18 @@ export class CursoComponent {
     this.http.get('http://localhost/cursos', cuerpo).subscribe((Cursos) => { // Hace una solicitud GET para obtener los cursos
       const arr = Cursos as Curso[]; // Convierte la respuesta en un array de objetos Curso
       arr.forEach((Curso) => { // Itera sobre cada curso
-        this.agregarCursoALaSenial(Curso.CursoId, Curso.MateriaId, Curso.DocenteId, Curso.OfertaAcademicaId, Curso.Cupo, Curso.Aula, Curso.HorarioId , Curso.CreadoEn, Curso.ActualizadoEn); // Agrega cada curso a la señal
+        this.agregarCursoALaSenial(Curso.CursoId, Curso.MateriaId, Curso.DocenteId, Curso.Cupo, Curso.Aula, Curso.HorarioId , Curso.CreadoEn, Curso.ActualizadoEn); // Agrega cada curso a la señal
       });
       console.log(typeof(arr));
     });
   };
 
-  public agregarCursoALaSenial( CursoId: number=0,MateriaId: string, DocenteId: string, OfertaAcademicaId: string, Cupo: string, Aula: string,HorarioId: string, CreadoEn?: string, ActualizadoEn?: string
+  public agregarCursoALaSenial( CursoId: number=0,MateriaId: string, DocenteId: string,Cupo: string, Aula: string,HorarioId: string, CreadoEn?: string, ActualizadoEn?: string
     ) {
     let nuevoCurso= {      // Asigna el ID del curso
       CursoId: CursoId , // Asigna el ID del curso (opcional)
       MateriaId: MateriaId, // Asigna el ID de la materia
-      DocenteId: DocenteId, // Asigna el ID del docente
-      OfertaAcademicaId: OfertaAcademicaId, // Asigna el ID de la oferta académica
+      DocenteId: DocenteId, // Asigna el ID del docente 
       Cupo: Cupo, // Asigna el cupo del curso
       Aula: Aula,
       HorarioId, // Asigna el aula del curso
@@ -47,8 +46,8 @@ export class CursoComponent {
     this.Cursos.update((Cursos) => [...Cursos, nuevoCurso]); // Actualiza la señal para incluir el nuevo curso
   };
 
-  public agregarCurso(MateriaId: string, DocenteId: string, OfertaAcademicaId: string, Cupo: string, Aula: string, HorarioId: string) {
-    if (!MateriaId || !DocenteId || !OfertaAcademicaId || !Cupo || !Aula || !HorarioId) {
+  public agregarCurso(MateriaId: string, DocenteId: string, Cupo: string, Aula: string, HorarioId: string) {
+    if (!MateriaId || !DocenteId || !Cupo || !Aula || !HorarioId) {
       alert('Todos los campos son obligatorios');
       return;
     }
@@ -56,7 +55,6 @@ export class CursoComponent {
     let cuerpo = {
       MateriaId: MateriaId,
       DocenteId: DocenteId,
-      OfertaAcademicaId:OfertaAcademicaId,
       Cupo: Cupo,
       Aula: Aula,
       HorarioId: HorarioId,

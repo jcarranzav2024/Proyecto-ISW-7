@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:CantonId', async (req, res) => {
   try {
-    const resultado = await cantones.Borrar(req.params.CantonId);
+    const resultado = await cantones.Borrar(req.params.CantonId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar cantón' });

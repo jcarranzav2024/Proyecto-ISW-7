@@ -46,26 +46,37 @@ model PlanEstudio {
 model Curso {
   CursoId           Int      @id @default(autoincrement())
   MateriaId         Int
-  DocenteId         Int?
-  OfertaAcademicaId Int
+  DocenteId         Int?  
   Cupo              Int
   Aula              String
   Materia           Materia  @relation(fields: [MateriaId], references: [MateriaId])
-  Docente           Docente? @relation("CursosDocente", fields: [DocenteId], references: [DocenteId], onDelete: SetNull)
-  OfertaAcademica   OfertaAcademica @relation("ModeloDeCursosOfertas", fields: [OfertaAcademicaId], references: [OfertaAcademicaId])
+  Docente           Docente? @relation("CursosDocente", fields: [DocenteId], references: [DocenteId], onDelete: SetNull) 
   Estudiantes       Matricula[] @relation("CursoMatricula")
   HorarioId         Int?
   Historico         HistoricoAcademico[] @relation("HistoricoCurso")
   CursoHistorico    HistoricoAcademico[] @relation("Historico")
+  OfertaAcademicaId Int?
+  OfertaAcademica   OfertaAcademica? @relation(fields: [OfertaAcademicaId], references: [OfertaAcademicaId], onDelete: SetNull)
   CreadoEn          DateTime @default(now())
   ActualizadoEn     DateTime @default(now()) @updatedAt
   Estado            Boolean @default(true)
 }
 
+// Oferta Académica: Contiene la lista de cursos disponibles en un período académico.
+model OfertaAcademica {
+  OfertaAcademicaId  Int     @id @default(autoincrement())
+  PeriodoAcademicoId Int
+  PeriodoAcademico   PeriodoAcademico @relation(fields: [PeriodoAcademicoId], references: [PeriodoAcademicoId]) 
+  Cursos             Curso[]
+  CreadoEn           DateTime @default(now())
+  ActualizadoEn      DateTime @default(now()) @updatedAt
+  Estado             Boolean @default(true)
+}
 
 // Horario de los cursos: Define los días y horas en que se imparte un curso.
 model Horario {
   HorarioId  Int      @id @default(autoincrement())
+  Nombre     String
   Dia        String
   HoraInicio DateTime @db.Time
   HoraFin    DateTime @db.Time 
@@ -83,17 +94,6 @@ model PeriodoAcademico {
   CreadoEn           DateTime @default(now())
   ActualizadoEn      DateTime @default(now()) @updatedAt
   Estado             Boolean @default(true)
-}
-
-// Oferta Académica: Contiene la lista de cursos disponibles en un período académico.
-model OfertaAcademica {
-  OfertaAcademicaId  Int     @id @default(autoincrement())
-  PeriodoAcademicoId Int
-  PeriodoAcademico   PeriodoAcademico @relation(fields: [PeriodoAcademicoId], references: [PeriodoAcademicoId])
-  Cursos            Curso[] @relation("ModeloDeCursosOfertas")
-  CreadoEn          DateTime @default(now())
-  ActualizadoEn     DateTime @default(now()) @updatedAt
-  Estado            Boolean @default(true)
 }
 
 
@@ -146,7 +146,7 @@ model Auditoria {
 model Usuario {
   UsuarioId       Int   @id @default(autoincrement())
   Identificacion  String @unique
-  Login           String  
+  Login           String 
   Contrasena      String
   Email           String   @unique
   Rol             Rol
@@ -159,13 +159,13 @@ model Usuario {
 // Estudiantes: Almacena los datos personales y registros académicos de los estudiantes.
 model Estudiante {
   EstudianteId    Int      @id @default(autoincrement())
-  Identificacion  String
+  Identificacion  String @unique
   Nombre          String
   Apellido1       String
   Apellido2       String
-  Correo          String
+  Correo          String @unique
   Direccion       String
-  Telefono        String  
+  Telefono        String  @unique 
   Historico       HistoricoAcademico[] @relation("EstudianteHistorico")
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
@@ -175,13 +175,13 @@ model Estudiante {
 // Docentes: Contiene la información de los docentes y los cursos que imparten.
 model Docente {
   DocenteId       Int      @id @default(autoincrement())
-  Identificacion  String
+  Identificacion  String   @unique
   Nombre          String
   Apellido1       String
   Apellido2       String
-  Correo          String
+  Correo          String   @unique
   Direccion       String
-  Telefono        String
+  Telefono        String   @unique
   Cursos          Curso[]  @relation("CursosDocente")
   CreadoEn        DateTime @default(now())
   ActualizadoEn   DateTime @default(now()) @updatedAt
@@ -192,7 +192,7 @@ model Docente {
 enum Rol {
   Administrador
   Colaborador
-  Auditor
+  Usuario
 }
 
 // Modelo de Provincias: Representa una provincia dentro del país.

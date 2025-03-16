@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:OfertaAcademicaId', async (req, res) => {
   try {
-    const resultado = await ofertasacademicas.Borrar(req.params.OfertaAcademicaId);
+    const resultado = await ofertasacademicas.Borrar(req.params.OfertaAcademicaId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar oferta académica' });

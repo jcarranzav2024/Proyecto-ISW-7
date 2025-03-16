@@ -1,108 +1,317 @@
-
-/* Título de la aplicación */
-.app-title {
+.center {
   text-align: center;
-  margin-top: 50px;
-  font-size: 2rem;
-  color: #333;
-  flex-grow: 1;
-  padding-bottom: 50px;
 }
 
-/* Estilo general para el contenedor */
-.cantones-container {
-    width: 80%;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  width: 100%;
+  padding: 0px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.input-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.left-inputs, .right-inputs {
+  display: flex;
+  align-items: center;
+}
+
+.input-container label, .input-container input, .input-container button {
+  margin: 5px;
+}
+
+.wide-input {
+  width: 200px; 
+  max-width: 300px;
+  padding: 10px;
+}
+
+.small-input {
+  width: 100px;
+  max-width: 100px; 
+  padding: 10px;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto; /* Agregar scroll horizontal para tablas grandes */
+}
+
+.body-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.body-table th, .body-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.body-table th {
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.body-table th.action-col {
+  width: 150px; 
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn-add {
+  background-color: #3461b4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 150px; 
+}
+
+.btn-add:hover {
+  background-color: #6dacc9;
+}
+
+.btn-edit {
+  background-color: #76bbbb;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+  border-radius: 10%; /* Rounded corners */
+}
+
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+}
+
+.btn-deactivate {
+  background-color:  #c5837e;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+}
+
+.btn-activate{
+  background-color:#22bb67;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 10px;
+}
+
+.btn-toggle-deactivate {
+  background-color: #c24137e8;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 5px; /* Reduced padding to make the button smaller */
+  font-size: 26px; /* Reduced font size to make the text smaller */
+  border-radius: 25%; /* Rounded corners */
   
-  .cantones-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+}
+
+.btn-toggle-activate {
+  background-color: #3a6fac;
+  color: white;
+  cursor: pointer;
+  border: none;
+  padding: 5px; /* Reduced padding to make the button smaller */
+  font-size: 26px; /* Reduced font size to make the text smaller */
+  border-radius: 25%; /* Rounded corners */
+}
+
+.btn-edit, .btn-delete {
+  margin: 0 5px;
+}
+
+@media (max-width: 768px) {
+  .input-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  /* Lista de cantones */
-  .cantones-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+
+  .left-inputs, .right-inputs {
+    width: 100%;
+    justify-content: flex-start;
   }
-  
-  .canton-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    margin: 8px 0;
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  .input-container label, .input-container input, .input-container button {
+    width: 100%;
+    max-width: none;
   }
-  
-  .canton-item:hover {
-    background-color: #f1f1f1;
+
+  .input-container label {
+    display: inline-block;
+    width: 100px; /* Ancho fijo para las etiquetas */
   }
-  
-  .canton-id {
-    font-weight: bold;
-    color: #007bff;
+
+  .wide-input, .small-input {
+    width: 100%;
   }
-  
-  .canton-input {
-    flex-grow: 1;
-    padding: 8px;
-    margin: 0 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    outline: none;
+
+  .body-table th, .body-table td {
+    font-size: 14px; 
   }
-  
-  .canton-input:focus {
-    border-color: #007bff;
+
+  .card {
+    width: 90%;
   }
-  
-  .delete-btn {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+.modal.show {
+  display: block;
+}
+
+.modal-content {
+  width: 80%; /* Controla el tamaño general del modal */
+  max-width: 900px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  position: relative;  
+  display: flex;
+  margin: 5% auto;/* Centra el modal horizontalmente */
+  flex-direction: column;
+  align-items: center; /* Centra el contenido del formulario horizontalmente */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.form-group-container {
+  display: flex;
+  justify-content: center; /* Centra las columnas horizontalmente */
+  gap: 20px;
+  flex-wrap: wrap; /* Hace que las columnas se ajusten en pantallas pequeñas */
+}
+
+.form-group-column {
+  flex: 1;
+  min-width: 250px; /* Establece un ancho mínimo para cada columna */
+}
+
+
+.form-group {
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .form-group-container {
+    flex-direction: column;
+    align-items: center; /* Centra las columnas en pantallas pequeñas */
   }
-  
-  .delete-btn:hover {
-    background-color: #e43f3f;
-  }
-  
-  .empty-message {
-    font-size: 16px;
-    color: #777;
-  }
-  
-  .add-canton {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
-  .add-input {
-    width: 80%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-  }
-  
-  .add-input:focus {
-    border-color: #007bff;
-  }
-  
+}
+
+.swal2-toast {
+  font-size: 14px;
+  min-width: 200px;
+}
+
+.swal2-toast.swal2-success {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.swal2-toast.swal2-error {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+.swal2-container .swal2-toast .swal2-success{
+  background-color: #28a7467c !important;
+}
+
+.swal2-container .swal2-toast .swal2-error{
+  background-color: #ee394b60 !important;
+}
+
+body .swal2-container .swal2-toast .swal2-success {
+  background-color: #28a745 !important;
+}
+
+body .swal2-container .swal2-toast .swal2-error {
+  background-color: #dc3545 !important;
+}
+
+.swal2-container .swal2-toast .swal2-success {
+  background-color: #28a745 !important;
+}
+
+.swal2-container .swal2-toast .swal2-error {
+  background-color: #dc3545 !important;
+}
+

@@ -32,7 +32,7 @@ class Auditoria {
           CreadoEn: new Date() // ISO-8601 DateTime
         }
       });
-      return resultado;
+      return { message: 'Auditoría agregada correctamente', resultado };
     } catch (error) {
       console.error(`No se pudo insertar la auditoría debido al error: ${error}`);
       throw new Error('Error al agregar auditoría');
@@ -65,17 +65,17 @@ class Auditoria {
     }
   }
 
-  async Borrar(AuditoriaId) {
+  async Borrar(AuditoriaId, req, res) {
     try {
       const resultado = await prisma.auditoria.delete({
         where: {
           AuditoriaId: parseInt(AuditoriaId),
         },
       });
-      return { message: `Auditoría con ID ${AuditoriaId} borrada correctamente` };
+      res.json({ message: `Auditoría con ID ${AuditoriaId} borrada correctamente` });
     } catch (error) {
       console.error(`No se pudo borrar la auditoría ${AuditoriaId} debido al error: ${error}`);
-      throw error;
+      res.status(500).json({ error: error.message || 'Error al borrar auditoría' });
     }
   }
 }

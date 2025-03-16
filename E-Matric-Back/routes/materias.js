@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:MateriaId', async (req, res) => {
   try {
-    const resultado = await materias.Borrar(req.params.MateriaId);
+    const resultado = await materias.Borrar(req.params.MateriaId, req, res);
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al borrar materia' });
