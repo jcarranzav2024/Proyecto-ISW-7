@@ -891,8 +891,118 @@ async function main() {
 
     console.log('100 Planes de Estudio creados con éxito');
 
+     //******************************************************************* CARRERAS UNIVERSITARIAS ******************************************************/
 
+    // Crear 100 Carreras Universitarias de ejemplo
+    await prisma.carrera.createMany({
+      data: [
+      { Nombre: 'Ingeniería en Sistemas de Computación', Codigo: 'ISC', Estado: true },
+      { Nombre: 'Licenciatura en Administración de Empresas', Codigo: 'LAE', Estado: true },
+      { Nombre: 'Ingeniería Civil', Codigo: 'IC', Estado: true },
+      { Nombre: 'Medicina General', Codigo: 'MG', Estado: true },
+      { Nombre: 'Arquitectura', Codigo: 'ARQ', Estado: true },
+      { Nombre: 'Ingeniería Electrónica', Codigo: 'IE', Estado: true },
+      { Nombre: 'Psicología', Codigo: 'PSI', Estado: true },
+      { Nombre: 'Contaduría Pública', Codigo: 'CP', Estado: true },
+      { Nombre: 'Derecho', Codigo: 'DER', Estado: true },
+      { Nombre: 'Ingeniería Industrial', Codigo: 'II', Estado: true },
+      { Nombre: 'Ingeniería Mecánica', Codigo: 'IM', Estado: true },
+      { Nombre: 'Ciencias de la Computación', Codigo: 'CC', Estado: true },
+      { Nombre: 'Física', Codigo: 'FIS', Estado: true },
+      { Nombre: 'Matemáticas', Codigo: 'MAT', Estado: true },
+      { Nombre: 'Química', Codigo: 'QUI', Estado: true },
+      { Nombre: 'Biología', Codigo: 'BIO', Estado: true },
+      { Nombre: 'Ingeniería Ambiental', Codigo: 'IA', Estado: true },
+      { Nombre: 'Ingeniería Biomédica', Codigo: 'IB', Estado: true },
+      { Nombre: 'Ingeniería en Telecomunicaciones', Codigo: 'IT', Estado: true },
+      { Nombre: 'Mercadotecnia', Codigo: 'MKT', Estado: true },
+      { Nombre: 'Nutrición', Codigo: 'NUT', Estado: true },
+      { Nombre: 'Ingeniería Aeroespacial', Codigo: 'IAE', Estado: true },
+      { Nombre: 'Filosofía', Codigo: 'FIL', Estado: true },
+      { Nombre: 'Ingeniería Agronómica', Codigo: 'IAG', Estado: true },
+      { Nombre: 'Relaciones Internacionales', Codigo: 'RI', Estado: true },
+      { Nombre: 'Antropología', Codigo: 'ANT', Estado: true },
+      { Nombre: 'Ingeniería de Materiales', Codigo: 'IMT', Estado: true },
+      { Nombre: 'Sociología', Codigo: 'SOC', Estado: true },
+      { Nombre: 'Historia', Codigo: 'HIS', Estado: true },
+      { Nombre: 'Ciencias Políticas', Codigo: 'CPOL', Estado: true },
+      { Nombre: 'Arte Digital', Codigo: 'AD', Estado: true },
+      { Nombre: 'Música', Codigo: 'MUS', Estado: true },
+      { Nombre: 'Diseño Gráfico', Codigo: 'DG', Estado: true },
+      { Nombre: 'Ingeniería Geológica', Codigo: 'IG', Estado: true },
+      { Nombre: 'Ingeniería Petrolera', Codigo: 'IP', Estado: true },
+      { Nombre: 'Enfermería', Codigo: 'ENF', Estado: true },
+      { Nombre: 'Farmacia', Codigo: 'FAR', Estado: true },
+      { Nombre: 'Ingeniería Naval', Codigo: 'IN', Estado: true },
+      { Nombre: 'Educación Primaria', Codigo: 'EP', Estado: true },
+      { Nombre: 'Educación Secundaria', Codigo: 'ES', Estado: true },
+      { Nombre: 'Pedagogía', Codigo: 'PED', Estado: true },
+      { Nombre: 'Cine y Televisión', Codigo: 'CTV', Estado: true },
+      { Nombre: 'Ingeniería Textil', Codigo: 'ITX', Estado: true },
+      { Nombre: 'Tecnología de Alimentos', Codigo: 'TA', Estado: true },
+      { Nombre: 'Trabajo Social', Codigo: 'TS', Estado: true },
+      { Nombre: 'Lenguas Extranjeras', Codigo: 'LE', Estado: true },
+      { Nombre: 'Turismo', Codigo: 'TUR', Estado: true },
+      { Nombre: 'Ingeniería en Energías Renovables', Codigo: 'IER', Estado: true },
+      { Nombre: 'Gestión Deportiva', Codigo: 'GD', Estado: true },
+      { Nombre: 'Animación 3D y Videojuegos', Codigo: 'A3DV', Estado: true },
+      { Nombre: 'Ingeniería en Inteligencia Artificial', Codigo: 'IIA', Estado: true },
+      { Nombre: 'Ingeniería en Ciberseguridad', Codigo: 'IC', Estado: true },
+      { Nombre: 'Neurociencia', Codigo: 'NEU', Estado: true },
+      { Nombre: 'Robótica', Codigo: 'ROB', Estado: true },
+      { Nombre: 'Astrofísica', Codigo: 'AST', Estado: true },
+      { Nombre: 'Ingeniería en Energía', Codigo: 'IEN', Estado: true },
+      { Nombre: 'Ingeniería en Transporte', Codigo: 'ITR', Estado: true },
+      { Nombre: 'Ingeniería en Automatización', Codigo: 'IAU', Estado: true },
+      { Nombre: 'Ingeniería en Biotecnología', Codigo: 'IBT', Estado: true },
+      { Nombre: 'Ingeniería en Nanotecnología', Codigo: 'INT', Estado: true },
+      { Nombre: 'Ingeniería en Mecatrónica', Codigo: 'IMC', Estado: true },
+      { Nombre: 'Ingeniería en Sistemas de Información', Codigo: 'ISI', Estado: true },
+      { Nombre: 'Ingeniería en Logística', Codigo: 'IL', Estado: true },
+      { Nombre: 'Ingeniería en Manufactura', Codigo: 'IMF', Estado: true },
+      { Nombre: 'Ingeniería en Software', Codigo: 'ISW', Estado: true },
+      { Nombre: 'Ingeniería en Computación', Codigo: 'ICOMP', Estado: true },
+      { Nombre: 'Ingeniería en Sistemas', Codigo: 'IS', Estado: true },
+      { Nombre: 'Ingeniería en Electrónica', Codigo: 'IELEC', Estado: true },
+      { Nombre: 'Ingeniería en Control', Codigo: 'ICONT', Estado: true },
+      { Nombre: 'Ingeniería en Instrumentación', Codigo: 'IINST', Estado: true },
+      { Nombre: 'Ingeniería en Metalurgia', Codigo: 'IMET', Estado: true },
+      { Nombre: 'Ingeniería en Minas', Codigo: 'IMIN', Estado: true },
+      { Nombre: 'Ingeniería en Gas', Codigo: 'IGAS', Estado: true },
+      { Nombre: 'Ingeniería en Medio Ambiente', Codigo: 'IMA', Estado: true },
+      { Nombre: 'Ingeniería en Recursos Naturales', Codigo: 'IRN', Estado: true },
+      { Nombre: 'Ingeniería en Geofísica', Codigo: 'IGF', Estado: true },
+      { Nombre: 'Ingeniería en Hidrología', Codigo: 'IH', Estado: true },
+      { Nombre: 'Ingeniería en Oceanografía', Codigo: 'IO', Estado: true },
+      { Nombre: 'Ingeniería en Meteorología', Codigo: 'IMETEO', Estado: true },
+      { Nombre: 'Ingeniería en Sismología', Codigo: 'ISISM', Estado: true },
+      { Nombre: 'Ingeniería en Vulcanología', Codigo: 'IVUL', Estado: true },
+      { Nombre: 'Ingeniería en Astronomía', Codigo: 'IASTR', Estado: true },
+      { Nombre: 'Ingeniería en Física', Codigo: 'IFIS', Estado: true },
+      { Nombre: 'Ingeniería en Química', Codigo: 'IQ', Estado: true },
+      { Nombre: 'Ingeniería en Biología', Codigo: 'IBIO', Estado: true },
+      { Nombre: 'Ingeniería en Ecología', Codigo: 'IEC', Estado: true },
+      { Nombre: 'Ingeniería en Genética', Codigo: 'IGEN', Estado: true },
+      { Nombre: 'Ingeniería en Microbiología', Codigo: 'IMB', Estado: true },
+      { Nombre: 'Ingeniería en Zoología', Codigo: 'IZOO', Estado: true },
+      { Nombre: 'Ingeniería en Botánica', Codigo: 'IBOT', Estado: true },
+      { Nombre: 'Ingeniería en Agricultura', Codigo: 'IAGR', Estado: true },
+      { Nombre: 'Ingeniería en Silvicultura', Codigo: 'ISIL', Estado: true },
+      { Nombre: 'Ingeniería en Pesca', Codigo: 'IPES', Estado: true },
+      { Nombre: 'Ingeniería en Acuicultura', Codigo: 'IACU', Estado: true },
+      { Nombre: 'Ingeniería en Recursos Hídricos', Codigo: 'IRH', Estado: true },
+      { Nombre: 'Ingeniería en Energía Solar', Codigo: 'IES', Estado: true },
+      { Nombre: 'Ingeniería en Energía Eólica', Codigo: 'IEE', Estado: true },
+      { Nombre: 'Ingeniería en Energía Geotérmica', Codigo: 'IEG', Estado: true },
+      { Nombre: 'Ingeniería en Energía Hidráulica', Codigo: 'IEH', Estado: true },
+      { Nombre: 'Ingeniería en Energía Nuclear', Codigo: 'IENUC', Estado: true },
+      ],
+      skipDuplicates: true,      
+    });
 
+    console.log('100 Carreras Universitarias creadas con éxito');
+
+    
     //******************************************************************* MATERIAS Y PLANES ******************************************************/
 
     await prisma.materia.createMany({
@@ -1127,8 +1237,7 @@ async function main() {
 
         cursosData.push({
           MateriaId: materiaAleatoria.MateriaId,
-          DocenteId: docenteAleatorio.DocenteId,
-          OfertaAcademicaId: null,
+          DocenteId: docenteAleatorio.DocenteId,          
           Cupo: Math.floor(Math.random() * 5) + 20, // Entre 20 y 25 cupos
           Aula: aulaAleatoria,
           HorarioId: horarioAleatorio.HorarioId, // Asignamos el ID del horario
@@ -1163,7 +1272,7 @@ async function main() {
     }
     
     const cursosTotales = await prisma.curso.findMany({
-      select: { CursoId: true, OfertaAcademicaId: true }
+      select: { CursoId: true }
     });
     
     if (cursosTotales.length === 0) {
@@ -1174,43 +1283,49 @@ async function main() {
     for (const periodo of periodosLista) {
       // Crear la oferta
       const oferta = await prisma.ofertaAcademica.create({
-        data: {
-          PeriodoAcademicoId: periodo.PeriodoAcademicoId,
-        },
+      data: {
+      PeriodoAcademicoId: periodo.PeriodoAcademicoId,
+      },
       });
     
-      // Buscar cursos no asignados aún
-      const cursosDisponibles = cursosTotales.filter(c => !c.OfertaAcademicaId);
-      const cursosAleatorios = cursosDisponibles.sort(() => 0.5 - Math.random()).slice(0, 6);
+      // Seleccionar cursos aleatorios para la oferta
+      const cursosAleatorios = cursosTotales.sort(() => 0.5 - Math.random()).slice(0, 6);
     
       if (cursosAleatorios.length < 6) {
-        console.warn(`⚠️ Solo hay ${cursosAleatorios.length} cursos disponibles para asignar a la oferta del periodo ${periodo.PeriodoAcademicoId}`);
+      console.warn(`⚠️ Solo hay ${cursosAleatorios.length} cursos disponibles para asignar a la oferta del periodo ${periodo.PeriodoAcademicoId}`);
       }
     
+      const cursosAsignados = new Set<number>(); // Para asegurar que no se repitan cursos en la misma oferta
       for (const curso of cursosAleatorios) {
-        await prisma.curso.update({
-          where: { CursoId: curso.CursoId },
-          data: { OfertaAcademicaId: oferta.OfertaAcademicaId },
+      if (!cursosAsignados.has(curso.CursoId)) {
+        await prisma.cursoOfertaAcademica.create({
+        data: {
+          CursoId: curso.CursoId,
+          OfertaAcademicaId: oferta.OfertaAcademicaId,
+        },
         });
-    
-        // Actualiza la lista local para no reasignar el curso
-        curso.OfertaAcademicaId = oferta.OfertaAcademicaId;
+        cursosAsignados.add(curso.CursoId); // Marcar el curso como asignado
+      }
       }
     }
     
     // Verificación final
     const ofertas = await prisma.ofertaAcademica.findMany({
       include: {
-        Cursos: true,
-        PeriodoAcademico: true,
+      CursoOfertaAcademica: {
+        include: {
+        Curso: true,
+        },
+      },
+      PeriodoAcademico: true,
       },
     });
     
     for (const oferta of ofertas) {
-      if (oferta.Cursos.length < 6) {
-        console.warn(`⚠️ La oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} solo tiene ${oferta.Cursos.length} cursos.`);
+      if (oferta.CursoOfertaAcademica.length < 6) {
+      console.warn(`⚠️ La oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} solo tiene ${oferta.CursoOfertaAcademica.length} cursos.`);
       } else {
-        console.log(`✔️ Oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} tiene ${oferta.Cursos.length} cursos asignados.`);
+      console.log(`✔️ Oferta del periodo ${oferta.PeriodoAcademico.Nombre ?? oferta.PeriodoAcademicoId} tiene ${oferta.CursoOfertaAcademica.length} cursos asignados.`);
       }
     }
     

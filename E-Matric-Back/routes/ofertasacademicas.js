@@ -43,7 +43,14 @@ router.delete('/:OfertaAcademicaId', async (req, res) => {
 router.put('/:OfertaAcademicaId', async (req, res) => {
   try {
     const { OfertaAcademicaId } = req.params;
-    const resultado = await ofertasacademicas.Actualizar(OfertaAcademicaId, req, res);
+    const { PeriodoAcademicoId, Cursos, Estado, UsuarioId } = req.body;
+
+    let resultado;
+    if (Estado !== undefined && UsuarioId !== undefined && PeriodoAcademicoId === undefined && Cursos === undefined) {
+      resultado = await ofertasacademicas.Activar(OfertaAcademicaId, req, res);
+    } else {
+      resultado = await ofertasacademicas.Actualizar(OfertaAcademicaId, req, res);
+    }
     res.json(resultado);
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar oferta académica' });

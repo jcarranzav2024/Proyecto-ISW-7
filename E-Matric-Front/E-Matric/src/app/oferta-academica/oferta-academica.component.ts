@@ -6,6 +6,7 @@ import { OfertaAcademica } from '../model/ofertaAcademica';
 import{ Curso } from '../model/curso';
 import{ PeriodoAcademico } from '../model/periodoAcademico';
 import { Materia } from '../model/materia';
+import { Docente } from '../model/docente';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,6 +23,7 @@ export class OfertaAcademicaComponent {
   public periodosAcademicos: PeriodoAcademico[] = [];
   public materias: Materia[] = [];
   public cursos: Curso[] = [];
+  public docentes: Docente[] = [];
   public cursosDisponibles: Curso[] = [];
   public cursosAsignados: Curso[] = [];
   public searchTerm: string = '';
@@ -35,6 +37,8 @@ export class OfertaAcademicaComponent {
     this.metodoGETPeriodosAcademicos();
     this.metodoGETCursos();
     this.metodoGetMaterias();
+    this.metodoGetDocentes();
+
   }
 
   public inputOfertaId: string = '';
@@ -45,7 +49,19 @@ export class OfertaAcademicaComponent {
       const ofertas = ofertasResponse as OfertaAcademica[];
       this.Ofertas.set(ofertas);
       this.filtrarOfertas();
+      console.log(ofertas);
     });
+  }
+
+  public metodoGetDocentes() {
+    this.http.get('http://localhost/docentes', {}).subscribe((docentesResponse) => {
+      this.docentes = docentesResponse as Docente[];
+    });
+  }
+
+  getNombreDocente(docenteId: string): string {
+    const docente = this.docentes.find(d => Number(d.DocenteId) === Number(docenteId)); 
+    return docente ? docente.Nombre+" "+docente.Apellido1 : 'Desconocido';
   }
 
   public metodoGetMaterias() {
@@ -56,7 +72,7 @@ export class OfertaAcademicaComponent {
 
   getNombreMateria(materiaId: string): string {
     const materia = this.materias.find(m => Number(m.MateriaId) === Number(materiaId)); 
-    return materia ? materia.Nombre+" - " : 'Desconocido';
+    return materia ? materia.Nombre : 'Desconocido';
   }
 
   public metodoGETPeriodosAcademicos() {
@@ -252,8 +268,11 @@ export class OfertaAcademicaComponent {
   public editOferta(oferta: OfertaAcademica) {
     this.inputOfertaId = oferta.OfertaAcademicaId?.toString() || '';
     this.inputPeriodoAcademicoId = oferta.PeriodoAcademicoId;
-    
+
+    // Asignar los cursos asignados y disponibles
+    this.cursosAsignados = (oferta.CursoOfertaAcademica ?? []).map((co: any) => co.Curso);
     this.cursosDisponibles = this.cursos.filter(curso => !this.cursosAsignados.some(asignado => asignado.CursoId === curso.CursoId));
+
     this.isModalOpen = true;
   }
 
@@ -305,7 +324,10 @@ export class OfertaAcademicaComponent {
   }
 
   mostrarDetalles(oferta: any) {
-    this.ofertaSeleccionada = oferta;
+    this.ofertaSeleccionada = {
+      ...oferta,
+      Cursos: oferta.CursoOfertaAcademica.map((co: any) => co.Curso)
+    };
     this.isDetallesModalOpen = true;
   }
 

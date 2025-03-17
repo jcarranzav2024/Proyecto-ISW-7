@@ -31,7 +31,7 @@
         <tr *ngFor="let oferta of ofertasFiltradas; trackBy: trackByOfertaId">
           <td>{{ getNombrePeriodoAcademico(oferta.PeriodoAcademicoId) }}</td>   
           <td class="action-buttons">
-            <button (click)="editOferta(oferta)" class="btn-edit">
+            <button (click)="editOferta(oferta)"  class="btn-edit">
               <i class="fas fa-edit"></i> Editar
             </button>
             <button (click)="mostrarDetalles(oferta)" class="btn-details">
@@ -59,7 +59,7 @@
     
     <div class="form-group">
       <label for="inputPeriodoAcademicoId">Periodo Académico: </label>
-      <select id="inputPeriodoAcademicoId" [(ngModel)]="inputPeriodoAcademicoId" class="wide-input">
+      <select id="inputPeriodoAcademicoId" [(ngModel)]="inputPeriodoAcademicoId" class="wide-input" [disabled]="inputOfertaId !== ''">
         <option *ngFor="let periodo of periodosAcademicos" [value]="periodo.PeriodoAcademicoId">{{ periodo.Nombre }}</option>
       </select>
     </div>
@@ -111,10 +111,12 @@
       <h3>Cursos</h3>
       <ul>
         <li *ngFor="let curso of ofertaSeleccionada.Cursos">
-          <span>{{ getNombreMateria(curso.MateriaId)}}</span>
+          <span>Materia: {{ getNombreMateria(curso.MateriaId)}}</span>
+          <span>Docente: {{ getNombreDocente(curso.DocenteId) }}</span>
           <span>Aula: {{ curso.Aula }}</span>
           <span>Cupo: {{ curso.Cupo }}</span>
         </li>
+        <li *ngIf="ofertaSeleccionada.Cursos.length === 0">No hay cursos asignados.</li>
       </ul>
     </div>
   </div>
