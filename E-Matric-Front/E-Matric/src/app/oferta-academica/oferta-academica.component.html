@@ -23,13 +23,15 @@
     <table class="body-table">
       <thead>
         <tr>
-          <th>Periodo Académico</th> 
+          <th>Periodo Académico</th>
+          <th>Carrera</th>
           <th class="action-col">Acciones</th>         
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let oferta of ofertasFiltradas; trackBy: trackByOfertaId">
-          <td>{{ getNombrePeriodoAcademico(oferta.PeriodoAcademicoId) }}</td>   
+          <td>{{ getNombrePeriodoAcademico(oferta.PeriodoAcademicoId) }}</td> 
+          <td>{{ getNombreCarrera(oferta.CarreraId) }}</td>  
           <td class="action-buttons">
             <button (click)="editOferta(oferta)"  class="btn-edit">
               <i class="fas fa-edit"></i> Editar
@@ -61,6 +63,13 @@
       <label for="inputPeriodoAcademicoId">Periodo Académico: </label>
       <select id="inputPeriodoAcademicoId" [(ngModel)]="inputPeriodoAcademicoId" class="wide-input" [disabled]="inputOfertaId !== ''">
         <option *ngFor="let periodo of periodosAcademicos" [value]="periodo.PeriodoAcademicoId">{{ periodo.Nombre }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="inputCarreraId">Carrera universitaria: </label>
+      <select id="inputCarreraId" [(ngModel)]="inputCarreraId" class="wide-input">
+        <option *ngFor="let carrera of carreras" [value]="carrera.CarreraId">{{ carrera.Nombre }}</option>
       </select>
     </div>
     

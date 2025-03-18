@@ -15,6 +15,7 @@ const routerDocentes = require('./docentes.js');
 const routerProvincias = require('./provincias.js');
 const routerCantones = require('./cantones.js');
 const routerDistritos = require('./distritos.js');
+const routerCarreras = require('./carreras.js');
 
 function routerAPI(app) {
 
@@ -34,6 +35,7 @@ function routerAPI(app) {
   app.use('/provincias', routerProvincias);
   app.use('/cantones', routerCantones);
   app.use('/distritos', routerDistritos);
+  app.use('/carreras', routerCarreras);
 }
 
 module.exports = routerAPI;

@@ -7,6 +7,7 @@ import{ Curso } from '../model/curso';
 import{ PeriodoAcademico } from '../model/periodoAcademico';
 import { Materia } from '../model/materia';
 import { Docente } from '../model/docente';
+import {Carrera} from '../model/carrera';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,6 +23,7 @@ export class OfertaAcademicaComponent {
   public ofertasFiltradas: OfertaAcademica[] = [];
   public periodosAcademicos: PeriodoAcademico[] = [];
   public materias: Materia[] = [];
+  public carreras: Carrera[] = [];
   public cursos: Curso[] = [];
   public docentes: Docente[] = [];
   public cursosDisponibles: Curso[] = [];
@@ -38,11 +40,13 @@ export class OfertaAcademicaComponent {
     this.metodoGETCursos();
     this.metodoGetMaterias();
     this.metodoGetDocentes();
+    this.metodoGETCarreras();
 
   }
 
   public inputOfertaId: string = '';
   public inputPeriodoAcademicoId: number | null = null;
+  public inputCarreraId: number | null = null;
 
   public metodoGETOfertas() {
     this.http.get('http://localhost/ofertasacademicas', {}).subscribe((ofertasResponse) => {
@@ -86,6 +90,17 @@ export class OfertaAcademicaComponent {
     return periodo ? periodo.Nombre : 'Desconocido';
   }
 
+  public metodoGETCarreras() {
+    this.http.get('http://localhost/carreras', {}).subscribe((carrerasResponse) => {
+      this.carreras = carrerasResponse as Carrera[];
+    });
+  }
+
+  getNombreCarrera(carreraId: number): string {
+    const carrera = this.carreras.find(c => Number(c.CarreraId) === Number(carreraId));
+    return carrera ? carrera.Nombre : 'Desconocido';
+  }
+
   public metodoGETCursos() {
     this.http.get('http://localhost/cursos', {}).subscribe((cursosResponse) => {
       this.cursos = cursosResponse as Curso[];
@@ -98,6 +113,7 @@ export class OfertaAcademicaComponent {
 
     const cuerpo = {
       PeriodoAcademicoId: this.inputPeriodoAcademicoId,
+      CarreraId: this.inputCarreraId,
       Cursos: this.cursosAsignados.map(curso => curso.CursoId),
       UsuarioId: 1
     };
@@ -145,6 +161,7 @@ export class OfertaAcademicaComponent {
 
     const cuerpo = {
       PeriodoAcademicoId: this.inputPeriodoAcademicoId,
+      CarreraId: this.inputCarreraId,
       Cursos: this.cursosAsignados.map(curso => curso.CursoId),
       UsuarioId: 1
     };
@@ -253,6 +270,7 @@ export class OfertaAcademicaComponent {
     this.inputPeriodoAcademicoId = null;
     this.cursosAsignados = [];
     this.cursosDisponibles = [...this.cursos];
+    this.inputCarreraId = null;
   }
 
   public openModal() {
@@ -268,6 +286,7 @@ export class OfertaAcademicaComponent {
   public editOferta(oferta: OfertaAcademica) {
     this.inputOfertaId = oferta.OfertaAcademicaId?.toString() || '';
     this.inputPeriodoAcademicoId = oferta.PeriodoAcademicoId;
+    this.inputCarreraId = oferta.CarreraId;
 
     // Asignar los cursos asignados y disponibles
     this.cursosAsignados = (oferta.CursoOfertaAcademica ?? []).map((co: any) => co.Curso);
@@ -297,10 +316,20 @@ export class OfertaAcademicaComponent {
     if (!this.inputPeriodoAcademicoId) {
       errores.push('El Periodo Académico es obligatorio.');
     }
-
+  
     // Validación de Cursos
     if (this.cursosAsignados.length === 0) {
       errores.push('Debe seleccionar al menos un curso.');
+    }
+
+    // Validación de duplicados
+    const ofertaDuplicada = this.Ofertas().some(oferta => 
+      oferta.PeriodoAcademicoId === this.inputPeriodoAcademicoId &&
+      oferta.CarreraId === this.inputCarreraId
+    );
+
+    if (ofertaDuplicada) {
+      errores.push('Ya existe una oferta académica con el mismo Periodo Académico y Carrera.');
     }
 
     // Mostrar errores si existen

@@ -48,7 +48,7 @@ class OfertaAcademica {
   }
 
   async Agregar(req, res) {
-    const { PeriodoAcademicoId, Cursos, UsuarioId } = req.body;
+    const { PeriodoAcademicoId, Cursos, UsuarioId,CarreraId } = req.body;
     const errores = this.validarFormulario(req.body);
 
     // Validar cada curso
@@ -76,7 +76,8 @@ class OfertaAcademica {
         // Crear la oferta académica
         const ofertaAcademica = await prisma.ofertaAcademica.create({
             data: {
-                PeriodoAcademicoId: PeriodoAcademicoId,
+                PeriodoAcademicoId: parseInt(PeriodoAcademicoId),
+                CarreraId:parseInt(CarreraId),
                 CreadoEn: new Date()
             }
         });
@@ -131,7 +132,7 @@ class OfertaAcademica {
   }
 
   async Actualizar(OfertaAcademicaId, req, res) {
-    const { PeriodoAcademicoId, Cursos, Estado, UsuarioId } = req.body;
+    const { PeriodoAcademicoId, Cursos, Estado, UsuarioId, CarreraId } = req.body;
     const errores = this.validarFormulario(req.body);
 
     // Validar cada curso
@@ -160,7 +161,8 @@ class OfertaAcademica {
         const ofertaAcademica = await prisma.ofertaAcademica.update({
             where: { OfertaAcademicaId: parseInt(OfertaAcademicaId) },
             data: {
-                PeriodoAcademicoId: PeriodoAcademicoId,
+                PeriodoAcademicoId: parseInt(PeriodoAcademicoId),
+                CarreraId:parseInt(CarreraId),
                 ActualizadoEn: new Date()
             }
         });

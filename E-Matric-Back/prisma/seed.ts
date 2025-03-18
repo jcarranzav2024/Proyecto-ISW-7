@@ -1000,7 +1000,7 @@ async function main() {
       skipDuplicates: true,      
     });
 
-    console.log('100 Carreras Universitarias creadas con éxito');
+    
 
     
     //******************************************************************* MATERIAS Y PLANES ******************************************************/
@@ -1371,8 +1371,7 @@ async function main() {
       await prisma.$disconnect();
     });
 
-
-
+    console.log('100 Carreras Universitarias creadas con éxito');
 }
 
 main()

@@ -1,0 +1,78 @@
+<div class="container" style="padding-top: 60px;"> 
+  <div class="card">
+    <h1 class="center">{{ title }}</h1> 
+    <div class="input-container">
+      <div class="left-inputs">
+        <label for="search">Buscar: </label>
+        <input id="search" [(ngModel)]="searchTerm" (input)="filtrarCarreras()" type="text" class="wide-input"/>
+        <label for="filterField">Filtrar por: </label>
+        <select id="filterField" [(ngModel)]="filterField" (change)="filtrarCarreras()" class="wide-input">
+          <option value="Nombre">Nombre</option>
+          <option value="Codigo">Código</option>
+        </select>
+      </div>
+      <div class="right-inputs">       
+        <button (click)="openModal()" class="btn-add">
+          <i class="fas fa-plus"></i> Crear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container card">
+    <table class="body-table">
+      <thead>
+        <tr>         
+          <th>Nombre</th>
+          <th>Código</th>     
+          <th class="action-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let carrera of carrerasFiltradas; trackBy: trackByCarreraId">
+          <td>{{ carrera.Nombre }}</td>
+          <td>{{ carrera.Codigo }}</td>      
+          <td class="action-buttons">
+            <button (click)="editCarrera(carrera)" class="btn-edit">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button 
+              (click)="carrera.CarreraId ? desactivarCarrera(carrera.CarreraId, !carrera.Estado) : null" 
+              [ngClass]="carrera.Estado ? 'btn-toggle-activate' : 'btn-toggle-deactivate'" 
+              [attr.title]="carrera.Estado ? 'Desactivar' : 'Activar'">
+              <i class="fas" [ngClass]="carrera.Estado ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="carrerasFiltradas.length === 0">
+          <td colspan="6">Nada que mostrar.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ inputCarreraId === '' ? 'Crear Carrera' : 'Editar Carrera' }}</h2>
+    
+    <div class="form-group-container">
+      <div class="form-group">
+        <label for="inputNombre">Nombre: </label>
+        <input id="inputNombre" [(ngModel)]="inputNombre" type="text" class="wide-input"/>
+      </div>
+      <div class="form-group">
+        <label for="inputCodigo">Código: </label>
+        <input id="inputCodigo" [(ngModel)]="inputCodigo" type="text" class="wide-input"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button (click)="inputCarreraId === '' ? agregarCarrera() : modificarCarrera()" class="btn-add">
+        {{ inputCarreraId === '' ? 'Crear' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

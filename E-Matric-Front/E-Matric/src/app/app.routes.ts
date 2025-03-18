@@ -15,6 +15,7 @@ import { PeriodoAcademicoComponent } from './periodo-academico/periodo-academico
 import { PlanEstudioComponent } from './plan-estudio/plan-estudio.component';
 import { ProvinciasComponent } from './provincias/provincias.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { CarreraComponent } from './carrera/carrera.component';
 
 
 
@@ -78,5 +79,10 @@ export const routes: Routes = [
     {
         path: 'usuario',
         component: UsuarioComponent
+    },
+    {
+        path: 'carrera',
+        component: CarreraComponent
     }
+
 ];
